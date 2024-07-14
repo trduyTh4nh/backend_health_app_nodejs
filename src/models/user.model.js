@@ -75,14 +75,6 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     })
 
-    // const DrugApplication = require('./drugApplication.model')(sequelize, DataTypes)
-
-    // // một user có nhiều đơn thuốc
-    // User.hasMany(DrugApplication, {
-    //     foreignKey: 'id_user',
-    //     onDelete: 'CASCADE'
-    // })
-
 
 
     return User

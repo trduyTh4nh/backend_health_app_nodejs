@@ -1,7 +1,9 @@
 'use strict'
 
 const { BadRequestError, NotFoundError } = require("../core/error.response");
-const User = require("../models/user.model");
+const sequelize = require('../db/init.sequelize');
+const DataTypes = require('sequelize').DataTypes;
+const User = require("../models/user.model")(sequelize, DataTypes);
 const { findUserByEmail, findUserByUserName } = require("./user.service")
 const bcrypt = require('bcrypt')
 const JWT = require('jsonwebtoken')
@@ -20,7 +22,7 @@ class AccessService {
         const foundUser = await findUserByEmail(email);
         const holder = await findUserByUserName(username);
         if (foundUser || holder) {
-            throw new Error("User already exist!")
+            throw new BadRequestError("User already exist!")
         }
 
         // if you want to validate with email confirmation, please code here!!

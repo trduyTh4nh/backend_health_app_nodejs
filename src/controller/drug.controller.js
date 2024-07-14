@@ -10,6 +10,13 @@ class DrugController {
             metadata: await DrugService.getAllDrugApplication(req.params.id_user)
         }).send(res)
     }
+
+    deleteDrugFromApplication = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Delete drug from drug application successfully!",
+            metadata: await DrugService.deleteDrugFromDrugApplication(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new DrugController()

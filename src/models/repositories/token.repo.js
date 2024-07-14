@@ -2,7 +2,7 @@
 const sequelize = require('../../db/init.sequelize');
 const DataTypes = require('sequelize').DataTypes;
 
-const usertokenModel = require('../usertoken.model')(sequelize, DataTypes);
+const usertokenModel = require('../userToken.model')(sequelize, DataTypes);
 
 
 

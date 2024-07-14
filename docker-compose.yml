@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  backendhealtapplication:
+    image: backendhealtapplication
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3107:3107

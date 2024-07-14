@@ -31,7 +31,13 @@ const defineAssociations = (sequelize) => {
         onDelete: 'CASCADE'
     });
 
+    // một thuốc chi thiết chỉ thuộc về 1 thuốc
     DrugApplicationDetail.belongsTo(Drug, {
+        foreignKey: 'id_drug',
+    });
+
+    // một thuốc chỉ thuộc về nhiều thuốc chi chiết
+    Drug.hasMany(DrugApplicationDetail, {
         foreignKey: 'id_drug',
         onDelete: 'CASCADE'
     });
@@ -44,6 +50,11 @@ const defineAssociations = (sequelize) => {
         foreignKey: 'user_id',
         onDelete: 'CASCADE'
     });
+
+    DrugApplication.hasMany(DrugApplicationDetail, {
+        foreignKey: 'id_drug_application',
+        onDelete: 'CASCADE'
+    })
 };
 
 module.exports = defineAssociations;

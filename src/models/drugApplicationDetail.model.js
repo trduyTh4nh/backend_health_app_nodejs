@@ -53,19 +53,32 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         quantity_used: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false,
+
+        },
+        id_drug_application: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        id_drug: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        amount_per_consumption: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
+
+
     }, {
         tableName: 'drug_application_detail',
         timestamps: false
     })
-
-    // const Drug = require('./drug.model')(sequelize, DataTypes)
-
-    // DrugApplicationDetail.belongsTo(Drug, {
-    //     foreignKey: 'id_drug',
-    //     onDelete: 'CASCADE'
-    // })
 
     return DrugApplicationDetail
 };

@@ -1,13 +1,12 @@
 'use strict'
 require('dotenv').config()
-const { Sequelize, DataTypes } = require('sequelize')
+const { Sequelize } = require('sequelize')
 const defineAssociations = require('../models/defination/define')
 const USER = process.env.USERNAMEP
 const PASSWORD = process.env.PASSWORD
 const HOST = process.env.HOST
 const PORT = process.env.PORTPR
 const DATABASE = process.env.DATABASE
-
 
 
 const sequelizes = new Sequelize({
@@ -21,6 +20,7 @@ const sequelizes = new Sequelize({
 })
 
 
+const DataTypes = require('sequelize').DataTypes;
 
 const User = require('../models/user.model')(sequelizes, DataTypes);
 const DrugApplication = require('../models/drugApplication.model')(sequelizes, DataTypes);

@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: ./backend_healt_application
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgresdb  # Ensure this matches the service name
+      DB_USER: ${USERNAMEP}
+      DB_PASSWORD: ${PASSWORD}
+      DB_NAME: ${DATABASE}
+      DB_PORT: ${PORTPR}
+    ports:
+      - "3107:3107"
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${USERNAMEP}
+      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_DB: ${DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
