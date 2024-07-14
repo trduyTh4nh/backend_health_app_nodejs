@@ -54,26 +54,15 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true
     })
 
-    // NẾU MÀY VÔ CHẠY MÀ LỖI LÀ DO CÓ QUÁ NHIỀU PHỤ THUỘC VÒNG, NGHĨA LÀ NHỮNG PHỤ THUỘC 
-    // DƯ THỪA CẦN GIẢM BỚT ĐI CÁC PHỤ THUỘC đang bị lang mang
-
     
-    
-    const User = require('./user.model')(sequelize, DataTypes)
-    const ScheduleDetail = require('./scheduleDetail.model')(sequelize, DataTypes)
-    // một lịch chỉ thuộc về một User
-    Schedule.belongsTo(User, {
-        foreignKey: 'id_user',
-        onDelete: 'CASCADE'
-    })
-
-
-
-    // một lịch có nhiều lịch chi tiết
-    // Schedule.hasMany(ScheduleDetail, {
-    //     foreignKey: 'id_schedule',
+    // const User = require('./user.model')(sequelize, DataTypes)
+  
+    // Schedule.belongsTo(User, {
+    //     foreignKey: 'id_user',
     //     onDelete: 'CASCADE'
     // })
+
+
 
     return Schedule
 }

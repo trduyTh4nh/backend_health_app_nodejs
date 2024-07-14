@@ -2,7 +2,7 @@
 
 const { forEach, forIn } = require("lodash")
 const { BadRequestError } = require("../core/error.response")
-const { getDrugApplicationByUser, getDrugApplicationDetailFrom } = require("../models/repositories/drug.repo")
+const { getDrugApplicationByUser, getDrugApplicationDetailFrom, getScheduleDetailByAppDrugDetail } = require("../models/repositories/drug.repo")
 
 class DrugService {
     static getAllDrugApplication = async (id_user) => {
@@ -12,28 +12,28 @@ class DrugService {
             if (!drugApplications) {
                 return []
             }
-
-            const finalDrugApplication = []
-            for (let index = 0; index < drugApplications.length; index++) {
-                const drugApp = drugApplications[index];
+            const finalDrugApplicationPromises = drugApplications.map(async (drugApp) => {
                 const drugAppId = drugApp.id
-
                 const drugAppDetail = await getDrugApplicationDetailFrom(drugAppId)
 
-                const updatedDrugApp = {
+                const drugAppDetailPromises = drugAppDetail.map(async (drugAppDetailItem) => {
+                    const scheduleDetailsOf = await getScheduleDetailByAppDrugDetail(drugAppDetailItem.id_app_detail)
+                    return {
+                        ...drugAppDetailItem.dataValues,
+                        scheduleDetail: scheduleDetailsOf
+                    }
+                })
+                const resolvedDrugAppDetails = await Promise.all(drugAppDetailPromises);
+                return {
                     ...drugApp.dataValues,
-                    drugApplicationDetail: drugAppDetail
+                    drugAppDetailPromises: resolvedDrugAppDetails
                 }
-
-                finalDrugApplication.push(updatedDrugApp)
-            }
-
-            return finalDrugApplication
+            })
+            const finalDrugApplications = await Promise.all(finalDrugApplicationPromises);
+            return finalDrugApplications
         } catch (error) {
             throw new BadRequestError(error)
         }
     }
 }
-
-
 module.exports = DrugService
