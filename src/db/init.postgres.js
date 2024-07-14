@@ -11,13 +11,8 @@ require('dotenv').config();
 
 const sequelize = require('./init.sequelize')
 
-// const client = new Client({
-//     user: USER,
-//     password: PASSWORD,
-//     host: HOST,
-//     port: PORT,
-//     database: DATABASE
-// })
+
+
 
 class Database {
     constructor() {

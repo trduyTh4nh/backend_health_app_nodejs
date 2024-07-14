@@ -16,6 +16,8 @@ app.use(express.urlencoded({
 // init database
 require('./db/init.postgres')
 
+// require('./models/defination/define')
+
 // init routes 
 app.use('/', require('./routers/main'))
 
@@ -25,6 +27,7 @@ app.use((req, res, next) => {
     error.status = 404
     next(error)
 })
+
 app.use((error, req, res, next) => {
     const statusCode = error.status || 500
     console.log("Final error (app.js): ", error)

@@ -7,7 +7,11 @@ const bcrypt = require('bcrypt')
 const JWT = require('jsonwebtoken')
 const crypto = require('crypto');
 const { getInfoData } = require("../utils");
+const { saveToken } = require("./token.service");
+const { deleteToken } = require("../models/repositories/token.repo");
 require('dotenv').config()
+
+
 
 
 class AccessService {
@@ -64,23 +68,27 @@ class AccessService {
             if (!validate) {
                 throw new BadRequestError('Invalid credentials')
             }
-
             // 
             const token = JWT.sign({ email: email }, process.env.SECRET, { expiresIn: '1h' })
-
-            
+            if (token) {
+                await saveToken(foundUser.id_user, token)
+            }
             return {
                 user: getInfoData({ fields: ['id_user', 'name', 'username', 'email'], object: foundUser }),
                 token: token
             }
-
         } catch (error) {
             throw new BadRequestError(error)
         }
-
-    } 
-
-    static logout 
+    }
+    static logout = async (data) => {
+        try {
+            const id_user = data.id_user
+            await deleteToken(id_user)
+        } catch (error) {
+            throw new BadRequestError("Logout fail!")
+        }
+    }
 }
 
 module.exports = AccessService
