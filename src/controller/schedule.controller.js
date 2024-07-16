@@ -24,6 +24,14 @@ class ScheduleController {
             metadata: await ScheduleService.insertScheduleDetail(req.body)
         }).send(res)
     }
+    getAllScheduleDetailFromIdDrugDetail = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get all schedule successfully!",
+            metadata: await ScheduleService.getAllScheduleDetailFromIdDrugDetail(req.params.id_app_detail)
+        }).send(res)
+    }
+
+    
 }
 
 module.exports = new ScheduleController()

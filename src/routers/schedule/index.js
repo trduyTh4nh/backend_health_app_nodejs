@@ -8,4 +8,5 @@ router.use(authentication)
 router.put('/updateScheduleDetail/:id_schedule_detail', asyncHandler(scheduleController.updateScheDetail))
 router.delete('/deleteScheduleDetail/:id_schedule_detail', asyncHandler(scheduleController.deleteScheduleDetail))
 router.post('/insertScheduleDetail', asyncHandler(scheduleController.insertScheduleDetail))
+router.get('/getAllScheduleDetailFromIdDrugDetail/:id_app_detail', asyncHandler(scheduleController.getAllScheduleDetailFromIdDrugDetail))
 module.exports = router

@@ -2,7 +2,7 @@
 
 const { forEach, forIn, get } = require("lodash")
 const { BadRequestError, NotFoundError } = require("../core/error.response")
-const { getDrugApplicationByUser, getDrugApplicationDetailFrom, getScheduleDetailByAppDrugDetail, getDrugFromId, getDrugAppFromId, getListApplicationDetailFrom, deleteDrugFromDrugApplucation, deleteScheduleDetail } = require("../models/repositories/drug.repo")
+const { getDrugApplicationByUser, getDrugApplicationDetailFrom, getScheduleDetailByAppDrugDetail, getDrugFromId, getDrugAppFromId, getListApplicationDetailFrom, deleteDrugFromDrugApplucation, deleteScheduleDetail, getDrugDetailById } = require("../models/repositories/drug.repo")
 const { NotBeforeError } = require("jsonwebtoken")
 
 class DrugService {
@@ -43,14 +43,21 @@ class DrugService {
 
     static deleteDrugFromDrugApplication = async ({ id_app_detail }) => {
         try {
-            if(!id_app_detail) {
+            console.log("DEBUG: ", id_app_detail)
+            if (!id_app_detail) {
                 throw new NotFoundError('not found id_app_detail')
             }
-
             await deleteScheduleDetail(id_app_detail)
         } catch (error) {
             throw new BadRequestError(error)
         }
+    }
+
+    static getDrugDetailByIdDetail = async (id_drug_detail) => {
+        if (!id_drug_detail) {
+            throw new NotFoundError('Not found drug detail')
+        }
+        return await getDrugDetailById(id_drug_detail)
     }
 }
 module.exports = DrugService

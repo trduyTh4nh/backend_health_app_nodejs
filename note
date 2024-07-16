@@ -1,11 +1,19 @@
-1. xóa lịch 
-2. thêm lịch
-3. xóa thuốc
-4. CRUD thuốc giỏ hàng
+1. xóa lịch  - done
+2. thêm lịch - done
+3. xóa thuốc trong đơn thuốc - done
+3.5 tạo cart cho người dùng khi đăng kí - done
+4. CRUD thuốc giỏ hàng - pending 
+    - insert thuốc vào giỏ hàng 
+    - xóa thuốc khỏi giỏ hàng
+    - insert kiểm tra nếu giống nhau thì tạo field +1
+    - lấy toàn bộ cart detail 
+                - trong cart detail có drug
+                
 5. tạo notification
 6. xóa notification
 7. xóa all notification
 8. fill id user vào đơn thuốc
+
 
 
 

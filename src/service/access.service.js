@@ -31,7 +31,7 @@ class AccessService {
             const stalt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, stalt)
 
-            const user = User.create({
+            const user = await User.create({
                 username: username,
                 password: hashedPassword,
                 email: email,
@@ -43,14 +43,7 @@ class AccessService {
             return {
                 code: 201,
                 metadata: {
-                    user: {
-                        username: username,
-                        password: hashedPassword,
-                        email: email,
-                        role,
-                        name,
-                        phone
-                    },
+                    user
                 }
             }
 
@@ -66,7 +59,7 @@ class AccessService {
             if (!foundUser) {
                 throw new NotFoundError('User not found!')
             }
-            const validate = bcrypt.compare(password, foundUser.password)
+            const validate = await bcrypt.compare(password, foundUser.password)
             if (!validate) {
                 throw new BadRequestError('Invalid credentials')
             }

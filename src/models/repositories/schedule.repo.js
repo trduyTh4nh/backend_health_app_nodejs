@@ -11,14 +11,13 @@ const deleteScheduleDetail = async (id_schedule_detail) => {
     return await scheduleDetailModel.destroy({ where: { id_schedule_detail: id_schedule_detail } })
 }
 
-const addSchedileDetail = async ({ 
+const addSchedileDetail = async ({
     id_app_detail,
-        id_schedule,
-        status = false,
-        quantity_used,
-        time_use
+    id_schedule,
+    status = false,
+    quantity_used,
+    time_use
 }) => {
-   
 
     return await scheduleDetailModel.create({
         id_app_detail: id_app_detail,
@@ -30,8 +29,13 @@ const addSchedileDetail = async ({
 
 }
 
+const getAllScheleDetailFromIdDrugDetail = async (id_app_detail) => {
+    return await scheduleDetailModel.findAll({ where: { id_app_detail: id_app_detail } })
+}
+
 module.exports = {
     updateScheduleDetail,
     deleteScheduleDetail,
-    addSchedileDetail
+    addSchedileDetail,
+    getAllScheleDetailFromIdDrugDetail
 }

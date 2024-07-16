@@ -32,6 +32,7 @@ const getDrugAppFromId = async (id_drug_app) => {
 
 const deleteScheduleDetail = async (id_app_detail) => {
 
+    
     return await DrugApplicationDetail.destroy({
         where: { id_app_detail: id_app_detail }
     })
@@ -43,6 +44,16 @@ const getListApplicationDetailFrom = async (id_drug_app) => {
     })
 }
 
+const getDrugDetailById = async (id_app_detail) => {
+
+    return await DrugApplicationDetail.findOne({
+        where: { id_app_detail: id_app_detail }
+    })
+}
+
+
+
+
 module.exports = {
     getDrugApplicationByUser,
     getDrugApplicationDetailFrom,
@@ -50,5 +61,7 @@ module.exports = {
     getDrugFromId,
     getDrugAppFromId,
     deleteScheduleDetail,
-    getListApplicationDetailFrom
+    getListApplicationDetailFrom,
+    getDrugDetailById,
+    
 }
