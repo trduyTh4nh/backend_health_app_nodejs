@@ -52,17 +52,50 @@ const addDrugToCart = async ({
     })
 }
 
+// nghiên cứu thêm
 const updateQuantityCart = async ({ cart, quantity }) => {
+    if (!cart || !cart.id_cart) {
+        throw new Error('Invalid cart object or missing id_cart');
+    }
 
-    const getListDrugDetailFromCart = await CartDetail.findAll({ where: { id_cart: cart.id_cart } })
-    // ngay chỗ này lọc ra các sp khác nhau rồi update số lượng sản phẩm vào cart
-    // TRONG MỖI CÁI CHI TIẾT KHI LICK VÔ NÚT TĂNG SỐ LƯỢNG PHẢI UPDATE NÓ TĂNG GIẢM CHO TỪNG CÁI 
+    const listDrugCartDt = await CartDetail.findAll({ where: { id_cart: cart.id_cart } });
 
-    console.log(getListDrugDetailFromCart.dataValues)
+    if (!listDrugCartDt || listDrugCartDt.length === 0) {
+        throw new Error('No drug details found for the given cart.');
+    }
 
-    return getListDrugDetailFromCart
-}
+    listDrugCartDt.forEach((detail, index) => {
+        console.log(`Drug detail ${index}:`, detail.dataValues);
+    });
 
+    const listFiltered = [];
+
+    for (let i = 0; i < listDrugCartDt.length; i++) {
+        var isDuplicate = false;
+        for (let j = 0; j < listFiltered.length; j++) {
+            if (listDrugCartDt[i].id_drug === listFiltered[j].id_drug) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        if (!isDuplicate) {
+            listFiltered.push(listDrugCartDt[i]);
+        }
+    }
+
+    return {
+        numberTypeOfDifferentDrugs: listFiltered.length,
+        quantityTotal: listDrugCartDt.length,
+        // cái list này cần loop qua cái list listDrugCartDt
+        // để lấy id của các rug khác nhau sau đó dùng toán tử giải ...
+        // để giải quantity vào cho từng drug
+        // ex: { 
+        //      id_drug: 1
+        //       quantity: 3 
+        //       } chứ k để list các loại như vậy FIX NÓNG 🥵
+        listDrugCartDt: listFiltered,
+    };
+};
 // tạo update quantity cart detail
 
 const updateQuantityCartDetail = async ({ id_cart_detail, quantity }) => {

@@ -24,42 +24,45 @@ class CartService {
 
     static insertDrugIntoCart = async ({ id_drug, id_user }) => {
         try {
-            console.log("DEBUG ID_USER: ", id_user)
+            console.log("DEBUG ID_USER: ", id_user);
             const foundUser = await findUserById(id_user);
             if (!foundUser) {
-                throw new NotFoundError('User not found!')
+                throw new NotFoundError('User not found!');
             }
 
-            const foundCartUser = await findCartByIdUser(id_user)
-            console.log("Debug: " + foundCartUser.id_cart)
+            const foundCartUser = await findCartByIdUser(id_user);
             if (!foundCartUser) {
-                throw new NotFoundError('Cart does not exist!')
+                throw new NotFoundError('Cart does not exist!');
             }
 
-            var currentDate = new Date().toLocaleDateString()
+            console.log("Debug id_cart: " + foundCartUser.id_cart);
 
+            var currentDate = new Date().toLocaleDateString();
             const insertCartDetailToCart = await addDrugToCart({
                 id_drug: id_drug,
                 id_cart: foundCartUser.id_cart,
                 add_date: currentDate,
-            })
+            });
 
             if (!insertCartDetailToCart) {
-                throw new BadRequestError('Can not add drug to cart!')
+                throw new BadRequestError('Can not add drug to cart!');
             }
-            await updateQuantityCart({ cart: foundCartUser, quantity: 0 })
 
+            const result = await updateQuantityCart({ cart: foundCartUser, quantity: 0 });
+            console.log('Update Quantity Cart Result:', result);
 
-            // GỌI UPDATE SP SẢN PHẨM KHÁC NHAU TRONG CART
+            return result;
+
         } catch (error) {
-            throw new BadRequestError(error)
+            console.error('Error in insertDrugIntoCart:', error);
+            throw new BadRequestError(error.message);
         }
-    }
+    };
 
     static updateQuantityCart = async (payload) => {
         const { id_cart_detail, quantity } = payload
         const foundCartDetail = await foundCartDetailById(id_cart_detail)
-        if(!foundCartDetail) {
+        if (!foundCartDetail) {
             throw new NotFoundError('Can not find car detail!')
         }
         return await updateQuantityCartDetail({ id_cart_detail, quantity })

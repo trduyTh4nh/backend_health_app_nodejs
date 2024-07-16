@@ -7,4 +7,4 @@ router.post('/insertCart/:id_user', asyncHandler(cartController.insertCart))
 router.post('/insertDrugIntoCart', asyncHandler(cartController.insertDrugIntoCart))
 router.post('/updateQuantityCartDetail', asyncHandler(cartController.updateQuantityCartDetail))
 router.get('/getAllDrugInCart/:id_user', asyncHandler(cartController.getAllProductInCart))
-module.exports = router
+module.exports = router 
