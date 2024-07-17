@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER
         },
         time_use: {
-            type: DataTypes.DATE
+            type: DataTypes.TIME
         }
     }, {
         tableName: 'schedule_detail',

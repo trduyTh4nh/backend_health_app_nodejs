@@ -49,12 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     })
 
-    // const userModel = require('./user.model')(sequelize, DataTypes);
-    // // một token user chỉ thuộc về một user
-    // UserToken.belongsTo(userModel, {
-    //     foreignKey: 'user_id',
-    //     onDelete: 'CASCADE'
-    // })
+ 
 
     return UserToken
 }

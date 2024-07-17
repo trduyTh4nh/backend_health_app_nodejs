@@ -1,5 +1,5 @@
 const defineAssociations = (sequelize) => {
-    const { User, DrugApplication, Schedule, ScheduleDetail, Drug, Brand, DrugApplicationDetail, UserToken } = sequelize.models;
+    const { User, DrugApplication, Schedule, ScheduleDetail, Drug, Brand, DrugApplicationDetail, UserToken, Cart, CartDetail} = sequelize.models;
 
     // một user có nhiều đơn thuốc
     User.hasMany(DrugApplication, {
@@ -31,7 +31,13 @@ const defineAssociations = (sequelize) => {
         onDelete: 'CASCADE'
     });
 
+    // một thuốc chi thiết chỉ thuộc về 1 thuốc
     DrugApplicationDetail.belongsTo(Drug, {
+        foreignKey: 'id_drug',
+    });
+
+    // một thuốc chỉ thuộc về nhiều thuốc chi chiết
+    Drug.hasMany(DrugApplicationDetail, {
         foreignKey: 'id_drug',
         onDelete: 'CASCADE'
     });
@@ -44,6 +50,41 @@ const defineAssociations = (sequelize) => {
         foreignKey: 'user_id',
         onDelete: 'CASCADE'
     });
+
+    DrugApplication.hasMany(DrugApplicationDetail, {
+        foreignKey: 'id_drug_application',
+        onDelete: 'CASCADE'
+    })
+
+
+    // một user chỉ có 1 cart
+    User.hasOne(Cart, {
+        foreignKey: 'id_user',
+        onDelete: 'CASCADE'
+    })
+
+    // một cart có nhiều cart detail 
+    Cart.hasMany(CartDetail, {
+        foreignKey: 'id_cart',
+        onDelete: 'CASCADE'
+    })
+
+    // một cart detail chỉ thuộc 1 thuốc
+    CartDetail.belongsTo(Drug,  {
+        foreignKey: 'id_drug'
+    })
+    
+    DrugApplicationDetail.hasMany(ScheduleDetail, {
+        foreignKey: 'id_app_detail',
+        onDelete: 'CASCADE'
+    })
+
+    ScheduleDetail.belongsTo(DrugApplicationDetail, {
+        foreignKey: 'id_app_detail',
+        onDelete: 'CASCADE'
+    })
+
+    
 };
 
 module.exports = defineAssociations;
