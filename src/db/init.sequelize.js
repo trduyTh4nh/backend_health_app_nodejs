@@ -32,6 +32,7 @@ const DrugApplicationDetail = require('../models/drugApplicationDetail.model')(s
 const UserToken = require('../models/userToken.model')(sequelizes, DataTypes);
 const Cart = require('../models/cart.model')(sequelizes, DataTypes);
 const CartDetail = require('../models/cart.detail.model')(sequelizes, DataTypes);
+const Address = require('../models/address.model')(sequelizes, DataTypes)
 
 defineAssociations(sequelizes);
 

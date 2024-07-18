@@ -71,7 +71,8 @@ const defineAssociations = (sequelize) => {
 
     // một cart detail chỉ thuộc 1 thuốc
     CartDetail.belongsTo(Drug,  {
-        foreignKey: 'id_drug'
+        foreignKey: 'id_drug',
+        onDelete: 'CASCADE'
     })
     
     DrugApplicationDetail.hasMany(ScheduleDetail, {
@@ -83,6 +84,8 @@ const defineAssociations = (sequelize) => {
         foreignKey: 'id_app_detail',
         onDelete: 'CASCADE'
     })
+
+    
 
     
 };

@@ -24,6 +24,20 @@ class DrugController {
             metadata: await DrugService.getDrugDetailByIdDetail(req.params.id_app_drug_detail)
         }).send(res)
     }
+
+    getAllDrugApplication = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'get all drug application successfully!',
+            metadata: await DrugService.getAllApplicationOfUser(req.params.id_user)
+        }).send(res)
+    }
+
+    getApplicationDetailByIdApp = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'get application detail successfully!',
+            metadata: await DrugService.getApplicationDetailByIdApp(req.params.id_app)
+        }).send(res)
+    }
 }
 
 module.exports = new DrugController()

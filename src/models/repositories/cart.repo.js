@@ -1,6 +1,6 @@
 const { where } = require('sequelize');
 const sequelize = require('../../db/init.sequelize');
-const { NotFoundError } = require('../../core/error.response');
+const { NotFoundError, BadRequestError } = require('../../core/error.response');
 const DataTypes = require('sequelize').DataTypes;
 
 const Cart = require('../cart.model')(sequelize, DataTypes)
@@ -64,10 +64,6 @@ const updateQuantityCart = async ({ cart, quantity }) => {
         throw new Error('No drug details found for the given cart.');
     }
 
-    listDrugCartDt.forEach((detail, index) => {
-        console.log(`Drug detail ${index}:`, detail.dataValues);
-    });
-
     const listFiltered = [];
 
     for (let i = 0; i < listDrugCartDt.length; i++) {
@@ -83,26 +79,42 @@ const updateQuantityCart = async ({ cart, quantity }) => {
         }
     }
 
+    var count = 0;
+    for (let k = 0; k < listFiltered.length; k++) {
+        for (let i = 0; i < listDrugCartDt.length; i++) {
+            if (listFiltered[k].id_drug === listDrugCartDt[i].id_drug) {
+                count++
+            }
+        }
+        listFiltered[k] = {
+            ...listFiltered[k].dataValues,
+            quantityDrugDetail: count
+        }
+        count = 0
+    }
+
     return {
         numberTypeOfDifferentDrugs: listFiltered.length,
         quantityTotal: listDrugCartDt.length,
-        // cái list này cần loop qua cái list listDrugCartDt
-        // để lấy id của các rug khác nhau sau đó dùng toán tử giải ...
-        // để giải quantity vào cho từng drug
-        // ex: { 
-        //      id_drug: 1
-        //       quantity: 3 
-        //       } chứ k để list các loại như vậy FIX NÓNG 🥵
         listDrugCartDt: listFiltered,
     };
-};
-// tạo update quantity cart detail
 
+  
+};
+
+// tạo update quantity cart detail
 const updateQuantityCartDetail = async ({ id_cart_detail, quantity }) => {
     const foundCartDetailToCount = await CartDetail.findOne({ where: { id_cart_detail: id_cart_detail } });
+    if (!foundCartDetailById) {
+        throw new NotFoundError('This cart detail not found!')
+    }
+    // nếu thuốc bằng 1 thì không trừ nữa mà chỉ đợi để xóa
+    if (foundCartDetailToCount.quantity == 1 && quantity < 0) {
+        throw new BadRequestError('Quantity of drug in this cart detail minium!')
+    }
     return await foundCartDetailToCount.increment('quantity', { by: quantity });
-
 }
+
 
 const foundCartDetailById = async (id_cart_detail) => {
     return await CartDetail.findOne({ where: { id_cart_detail } })
@@ -124,10 +136,46 @@ const getAllProductInCartOfUser = async (id_user) => {
         return []
     }
 
-    const drugIds = listCartDetail.map(detail => detail.id_drug)
-    const listDrugIntoCart = await drugModel.findAll({ where: { id_drug: drugIds } })
+    const listFiltered = [];
 
-    return listDrugIntoCart
+    for (let i = 0; i < listCartDetail.length; i++) {
+        var isDuplicate = false;
+        for (let j = 0; j < listFiltered.length; j++) {
+            if (listCartDetail[i].id_drug === listFiltered[j].id_drug) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        if (!isDuplicate) {
+            listFiltered.push(listCartDetail[i]);
+        }
+    }
+
+    var count = 0;
+    for (let k = 0; k < listFiltered.length; k++) {
+        for (let i = 0; i < listCartDetail.length; i++) {
+            if (listFiltered[k].id_drug === listCartDetail[i].id_drug) {
+                count++
+            }
+        }
+        const drug = await drugModel.findOne({ where: { id_drug: listFiltered[k].id_drug } })
+        listFiltered[k] = {
+            ...listFiltered[k].dataValues,
+            quantityDrugDetail: count,
+            drug: drug
+        }
+        count = 0
+    }
+
+
+    return {
+        listFiltered
+    }
+}
+
+const deleteDrugInCart = async (id_cart_detail) => {
+
+    return await CartDetail.destroy({ where: { id_cart_detail: id_cart_detail } })
 }
 
 module.exports = {
@@ -137,5 +185,6 @@ module.exports = {
     updateQuantityCart,
     updateQuantityCartDetail,
     foundCartDetailById,
-    getAllProductInCartOfUser
+    getAllProductInCartOfUser,
+    deleteDrugInCart
 }

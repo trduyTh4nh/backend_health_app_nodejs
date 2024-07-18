@@ -3,17 +3,64 @@
 3. xóa thuốc trong đơn thuốc - done
 3.5 tạo cart cho người dùng khi đăng kí - done
 4. CRUD thuốc giỏ hàng - pending 
-    - insert thuốc vào giỏ hàng 
-    - xóa thuốc khỏi giỏ hàng
+    - insert thuốc vào giỏ hàng  - done
+    - xóa thuốc khỏi giỏ hàng - done
     - insert kiểm tra nếu giống nhau thì tạo field +1
-    - lấy toàn bộ cart detail 
+    - lấy toàn bộ cart detail - done
                 - trong cart detail có drug
-                
-5. tạo notification
-6. xóa notification
-7. xóa all notification
-8. fill id user vào đơn thuốc
+    => xong thêm thua vào giỏ hàng, tăng giảm thuốc trong giỏ hàng 
+    (CÒN XÓA CART)
+
+9. lấy lịch có status là 
+true lịch có status là false 
+vs tất cả chi tiết đơn thuốc - done
 
 
+5. tạo notification - pending
+6. xóa notification - pending
+7. xóa all notification - pending
+8. fill id user vào đơn thuốc - pending
 
 
+1	API xem cart	- done	
+2	API thêm vào cart	- done	
+3	API update vào cart	- done	
+4	API xoá khỏi cart	- doone 
+
+5	API CRUD thông tin địa chỉ - done
+6	API CRUD thông tin thẻ tín dụ   ng	- done
+7	Tích hợp thanh toán (Stripe, QRPay,…)		
+8	API thêm hoá đơn (đơn mua)		
+9	API cập nhật trạng thái đơn mua		
+10	API huỷ đơn mua		
+11	API hiển thị lịch sử thanh toán		
+12	API cập nhật (id người dùng) vào đơn thuốc sau khi quét mã QR		
+13	API hiển thị lịch tái khám		
+14	API thêm chi tiết đơn thuốc		
+15	API CRUD lịch uống thuốc		
+16	API lên lịch cho chi tiết đơn thuốc (hàng loạt)		
+17	API  chỉnh sửa thông tin cá nhân		
+18	API thay đổi password		
+19	API đăng ký		
+20	API đăng nhập		
+21	API hiển thị thông tin người dùng		
+22	API search bệnh (Crawl)		
+23	API tổng hợp doanh thu		
+24	API tổng hợp lợi nhuận		
+25	API CRUD tất cả người dùng		
+26	Check phân quyền người dùng trên API		
+27	API CRUD tất cả bệnh viện		
+28	API search người dùng		
+29	API search bệnh viện		
+30	API lấy người dùng by ID		
+31	API lấy bệnh viện by ID		
+32	API tổng hợp dịch bệnh		
+33	API lấy người dùng by ID		
+
+
+- giờ tạo bảng logs 
+- id_log
+- id_schedule_detail
+- date lưu full ngày + giờ
+
+- thêm ngày confirm cuối cùng trong schedule detail chỉ lưu ngày không lưu giờ

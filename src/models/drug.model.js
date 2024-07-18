@@ -94,6 +94,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         unit: {
             type: DataTypes.STRING(50)
+        },
+        image: {
+            type: DataTypes.STRING(500)
         }
     }, {
         tableName: 'drug',

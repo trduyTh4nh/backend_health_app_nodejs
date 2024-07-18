@@ -31,6 +31,12 @@ class ScheduleController {
         }).send(res)
     }
 
+    getAllScheduleWithSt = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get all schedule successfully!",
+            metadata: await ScheduleService.getAllScheduleWithStatus(req.params.id_user, req.body)
+        }).send(res)
+    }
     
 }
 

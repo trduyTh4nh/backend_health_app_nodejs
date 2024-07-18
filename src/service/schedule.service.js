@@ -1,7 +1,8 @@
 'use strict'
 
 const { BadRequestError, NotFoundError } = require("../core/error.response")
-const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail } = require("../models/repositories/schedule.repo")
+const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt } = require("../models/repositories/schedule.repo")
+const { findUserById } = require("../models/repositories/user.repo")
 const { isValidTimeFormat } = require("../utils")
 
 class ScheduleService {
@@ -48,6 +49,23 @@ class ScheduleService {
     static getAllScheduleDetailFromIdDrugDetail = async (id_app_detail) => {
         try {
             return await getAllScheleDetailFromIdDrugDetail(id_app_detail)
+        } catch (error) {
+            throw new BadRequestError(error)
+        }
+    }
+
+
+    // ĐANG LÀM
+    static getAllScheduleWithStatus = async (id_user, body) => {
+        const { status } = body
+        try {
+            const foundUser = await findUserById(id_user)
+            if (!foundUser) {
+                throw new NotFoundError('User not found!')
+            }
+
+            var result = await getAllScheduleWithSt(id_user, status)
+            return result
         } catch (error) {
             throw new BadRequestError(error)
         }

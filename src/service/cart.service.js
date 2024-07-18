@@ -1,5 +1,5 @@
 const { BadRequestError, NotFoundError } = require('../core/error.response')
-const { insertCart, findCartByIdUser, addDrugToCart, updateQuantityCart, updateQuantityCartDetail, foundCartDetail, foundCartDetailById, getAllProductInCartOfUser } = require('../models/repositories/cart.repo')
+const { insertCart, findCartByIdUser, addDrugToCart, updateQuantityCart, updateQuantityCartDetail, foundCartDetail, foundCartDetailById, getAllProductInCartOfUser, deleteDrugInCart } = require('../models/repositories/cart.repo')
 const { findUserById, findUserInCart } = require('../models/repositories/user.repo')
 
 class CartService {
@@ -73,6 +73,11 @@ class CartService {
         return await getAllProductInCartOfUser(id_user)
     }
 
+    static removeDrugInCart = async (id_cart_detail) => {
+        return deleteDrugInCart(id_cart_detail)
+    }
+
+    
     // cứ cho nó insert xong mỗi lần insert
     // viết 1 hàm update lại số lượng giỏ hàng
     // nếu mà id thuốc nó ví dụ thuốc trong giỏ hàng là

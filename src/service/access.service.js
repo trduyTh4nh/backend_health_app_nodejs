@@ -69,7 +69,7 @@ class AccessService {
                 await saveToken(foundUser.id_user, token)
             }
             return {
-                user: getInfoData({ fields: ['id_user', 'name', 'username', 'email'], object: foundUser }),
+                user: getInfoData({ fields: ['id_user', 'name', 'username', 'email', 'role'], object: foundUser }),
                 token: token
             }
         } catch (error) {

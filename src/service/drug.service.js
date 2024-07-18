@@ -2,7 +2,18 @@
 
 const { forEach, forIn, get } = require("lodash")
 const { BadRequestError, NotFoundError } = require("../core/error.response")
-const { getDrugApplicationByUser, getDrugApplicationDetailFrom, getScheduleDetailByAppDrugDetail, getDrugFromId, getDrugAppFromId, getListApplicationDetailFrom, deleteDrugFromDrugApplucation, deleteScheduleDetail, getDrugDetailById } = require("../models/repositories/drug.repo")
+const { getDrugApplicationByUser,
+    getDrugApplicationDetailFrom,
+    getScheduleDetailByAppDrugDetail,
+    getDrugFromId,
+    getDrugAppFromId,
+    getListApplicationDetailFrom,
+    deleteDrugFromDrugApplucation,
+    deleteScheduleDetail,
+    getDrugDetailById,
+    getAllApplication,
+    getAllDrugApplicationDetail
+} = require("../models/repositories/drug.repo")
 const { NotBeforeError } = require("jsonwebtoken")
 
 class DrugService {
@@ -59,5 +70,14 @@ class DrugService {
         }
         return await getDrugDetailById(id_drug_detail)
     }
+
+    static getApplicationDetailByIdApp = async (id_app) => {
+        return await getAllDrugApplicationDetail(id_app)
+    }
+
+    static getAllApplicationOfUser = async (id_user) => {
+        return await getAllApplication(id_user)
+    }
+
 }
 module.exports = DrugService

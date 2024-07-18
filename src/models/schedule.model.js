@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }, {
         tableName: 'schedule',
-        timestamps: true
+        timestamps: false
     })
 
     

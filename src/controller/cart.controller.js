@@ -31,6 +31,13 @@ class CartController {
             metadata: await CartService.getAllDrugInCartUser(req.params.id_user)
         }).send(res)
     }
+
+    removeDrugInCart = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Remove drug in cart successfully!',
+            metadata: await CartService.removeDrugInCart(req.params.id_cart_detail)
+        }).send(res)
+    }
 }
 
 module.exports = new CartController()
