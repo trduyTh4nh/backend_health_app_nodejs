@@ -9,6 +9,8 @@ router.use('/v1/api/drug', require('../drug'))
 router.use('/v1/api/schedule', require('../schedule'))
 router.use('/v1/api/cart', require('../cart'))
 router.use('/v1/api/address', require('../address'))
+router.use('/v1/api/user', require('../user'))
+router.use('/v1/api/log', require('../logs'))
 
 // special api
 router.post('/v1/api/image-upload', asyncHandler(uploadController.uploadFile))

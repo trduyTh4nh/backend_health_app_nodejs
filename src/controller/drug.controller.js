@@ -38,6 +38,41 @@ class DrugController {
             metadata: await DrugService.getApplicationDetailByIdApp(req.params.id_app)
         }).send(res)
     }
+
+    getAllDrugSystem = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'get all drug !',
+            metadata: await DrugService.getAllDrugSystem()
+        }).send(res)
+    }
+
+    searchFunction = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Result search',
+            metadata: await DrugService.searchDrugFunc(req.query.searchText)
+        }).send(res)
+    }
+
+    getAllApplicationByIdApplication = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get all application successfully!",
+            metadata: await DrugService.getAllDrugApplicationByIDApplication(req.params.id_app)
+        }).send(res)
+    }
+
+    scanDrugApplication = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Scan successfully!",
+            metadata: await DrugService.scanDrugApplication(req.body)
+        }).send(res)
+    }
+
+    addDrugCustomNotification = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Add drug custom notification successfully!",
+            metadata: await DrugService.addDrugNotifyCustom(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new DrugController()

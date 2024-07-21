@@ -33,6 +33,9 @@ const UserToken = require('../models/userToken.model')(sequelizes, DataTypes);
 const Cart = require('../models/cart.model')(sequelizes, DataTypes);
 const CartDetail = require('../models/cart.detail.model')(sequelizes, DataTypes);
 const Address = require('../models/address.model')(sequelizes, DataTypes)
+const PaymentInfo = require('../models/paymentInfo.model')(sequelizes, DataTypes)
+const Log = require('../models/logs.model')(sequelizes, DataTypes)
+const Hospital = require('../models/hospital.model')(sequelizes, DataTypes)
 
 defineAssociations(sequelizes);
 

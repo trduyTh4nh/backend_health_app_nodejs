@@ -13,4 +13,9 @@ router.delete('/deleteDrugFromDrugApplication', asyncHandler(drugController.dele
 router.get('/getDrugAppDetailById/:id_app_drug_detail', asyncHandler(drugController.getDrugAppDetailById))
 router.get('/getAllApplication/:id_user', asyncHandler(drugController.getAllDrugApplication))
 router.get('/getAllApplicationDetail/:id_app', asyncHandler(drugController.getApplicationDetailByIdApp))
+router.get('/getAllDrugSystem', asyncHandler(drugController.getAllDrugSystem))
+router.get('/searchDrug', asyncHandler(drugController.searchFunction))
+router.get('/getAllDrugAppBy/:id_app', asyncHandler(drugController.getAllApplicationByIdApplication))
+router.put('/scan', asyncHandler(drugController.scanDrugApplication))
+router.post('/addDrugCustom', asyncHandler(drugController.addDrugCustomNotification))
 module.exports = router 

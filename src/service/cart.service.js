@@ -24,7 +24,6 @@ class CartService {
 
     static insertDrugIntoCart = async ({ id_drug, id_user }) => {
         try {
-            console.log("DEBUG ID_USER: ", id_user);
             const foundUser = await findUserById(id_user);
             if (!foundUser) {
                 throw new NotFoundError('User not found!');
@@ -34,8 +33,6 @@ class CartService {
             if (!foundCartUser) {
                 throw new NotFoundError('Cart does not exist!');
             }
-
-            console.log("Debug id_cart: " + foundCartUser.id_cart);
 
             var currentDate = new Date().toLocaleDateString();
             const insertCartDetailToCart = await addDrugToCart({
@@ -49,7 +46,7 @@ class CartService {
             }
 
             const result = await updateQuantityCart({ cart: foundCartUser, quantity: 0 });
-            console.log('Update Quantity Cart Result:', result);
+           
 
             return result;
 

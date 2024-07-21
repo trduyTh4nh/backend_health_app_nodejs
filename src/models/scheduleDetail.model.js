@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         time_use: {
             type: DataTypes.TIME
+        },
+        last_confirm: {
+            type: DataTypes.DATE
         }
     }, {
         tableName: 'schedule_detail',

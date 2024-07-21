@@ -55,6 +55,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         status: {
             type: DataTypes.STRING(20)
+        },
+        id_user: {
+            type: DataTypes.INTEGER,
+        },
+        id_hospital: {
+            type: DataTypes.INTEGER
         }
     }, {
         tableName: 'drug_application',

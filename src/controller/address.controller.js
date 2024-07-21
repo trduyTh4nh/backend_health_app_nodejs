@@ -27,6 +27,12 @@ class AddressController {
         }).send(res)
     }
 
+    getAllAddressUser = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get all address of user successfully!",
+            metadata: await AddressService.getAllAddressUser(req.params.id_user)
+        }).send(res)
+    }
 }
 
 module.exports = new AddressController()

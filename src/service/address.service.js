@@ -1,5 +1,5 @@
 const { NotFoundError } = require("../core/error.response")
-const { createAddress, updateAddress, findAddressById, deleteAddressById } = require("../models/repositories/address.repo")
+const { createAddress, updateAddress, findAddressById, deleteAddressById, getAllAddressForUser } = require("../models/repositories/address.repo")
 const { findUserById } = require("../models/repositories/user.repo")
 
 class AddressService {
@@ -29,6 +29,15 @@ class AddressService {
         }
         return await deleteAddressById(id_address)
     }
+
+    static getAllAddressUser = async (id_user) => {
+        const foundUser = await findUserById(id_user)
+        if (!foundUser) {
+            throw new NotFoundError('User does not exist!')
+        }
+        return await getAllAddressForUser(id_user)
+    }
+
 
 
 }

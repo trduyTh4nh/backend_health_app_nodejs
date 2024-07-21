@@ -23,20 +23,30 @@ const updateAddress = async (id_address, address) => {
 }
 
 const findAddressById = async (id_address) => {
-    return addressModel.findOne({
+    return await addressModel.findOne({
         where: { id_address }
     })
 }
 
 const deleteAddressById = async (id_address) => {
-    return addressModel.destroy({
+    return await addressModel.destroy({
         where: { id_address }
+    })
+}
+
+
+const getAllAddressForUser = async (id_user) => {
+    return await addressModel.findAll({
+        where: {
+            id_user
+        }
     })
 }
 
 module.exports = {
     createAddress,
     updateAddress,
-    findAddressById, 
-    deleteAddressById
+    findAddressById,
+    deleteAddressById,
+    getAllAddressForUser
 }

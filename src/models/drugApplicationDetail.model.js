@@ -50,11 +50,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         time_to_use: {
             type: DataTypes.DATE,
-            allowNull: false
         },
         quantity_used: {
             type: DataTypes.INTEGER,
-            allowNull: false,
 
         },
         id_drug_application: {
@@ -67,11 +65,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         amount_per_consumption: {
             type: DataTypes.INTEGER,
-            allowNull: false
         },
         quantity: {
             type: DataTypes.INTEGER,
-            allowNull: false
         }
 
 

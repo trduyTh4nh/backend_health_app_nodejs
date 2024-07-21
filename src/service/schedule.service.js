@@ -1,16 +1,31 @@
 'use strict'
 
 const { BadRequestError, NotFoundError } = require("../core/error.response")
-const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt } = require("../models/repositories/schedule.repo")
+const { getAllApplication, getApplicationDetailById, getApplicationByIdApplication } = require("../models/repositories/drug.repo")
+const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt, getScheduleDetailById } = require("../models/repositories/schedule.repo")
 const { findUserById } = require("../models/repositories/user.repo")
 const { isValidTimeFormat } = require("../utils")
+const { insertLog } = require("./logs.service")
 
 class ScheduleService {
-    static updateStatusScheDetail = async (id_schedule_detail) => {
+    static updateStatusScheDetail = async (id_schedule_detail, payload) => {
         try {
+
             if (!id_schedule_detail) {
                 throw new NotFoundError('id_schedule_detail not found')
             }
+            const date_save = new Date().toLocaleDateString()
+            const { id_user } = payload
+            await insertLog({ id_schedule_detail, date_save, id_user })
+
+          //  var scheduleDetail = await getScheduleDetailById(id_schedule_detail)
+
+            // var applicationDetail = await getApplicationDetailById(scheduleDetail.id_app_detail)
+
+            // var application = await getApplicationByIdApplication(applicationDetail.id_drug_application)
+
+            // var id_user = application.id_user
+
             return await updateScheduleDetail(id_schedule_detail)
         } catch (error) {
             throw new BadRequestError(error)
@@ -28,6 +43,7 @@ class ScheduleService {
     }
     static insertScheduleDetail = async (payload) => {
         try {
+            console.log(payload)
             if (!payload) {
                 throw new NotFoundError('Not found data to insert');
             }

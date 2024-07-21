@@ -1,12 +1,37 @@
 const { where } = require('sequelize');
 const sequelize = require('../../db/init.sequelize');
+const { decrementDrugUsed } = require('./drug.repo');
 const DataTypes = require('sequelize').DataTypes;
 const scheduleModel = require('../schedule.model')(sequelize, DataTypes);
 const scheduleDetailModel = require('../scheduleDetail.model')(sequelize, DataTypes);
+const drugApplicationModel = require('../drugApplication.model')(sequelize, DataTypes);
 
 const updateScheduleDetail = async (id_schedule_detail) => {
-    return await scheduleDetailModel.update({ status: true }, { where: { id_schedule_detail: id_schedule_detail } })
-}
+    const currentDate = new Date().toISOString();
+    const scheduleDetail = await scheduleDetailModel.findOne({
+        where: { id_schedule_detail }
+    })
+
+
+
+    // const foundApplicationDetailFromScheduleDetail = await drugApplicationModel.findOne({
+    //     where: { id_app_detail: scheduleDetail.id_app_detail }
+    // })
+
+
+    await scheduleDetailModel.update(
+        { last_confirm: currentDate },
+        { where: { id_schedule_detail } }
+    );
+
+    await decrementDrugUsed(scheduleDetail.id_app_detail)
+
+    return await scheduleDetailModel.update(
+        { status: true },
+        { where: { id_schedule_detail: id_schedule_detail } }
+    );
+};
+
 
 const deleteScheduleDetail = async (id_schedule_detail) => {
     return await scheduleDetailModel.destroy({ where: { id_schedule_detail: id_schedule_detail } })
@@ -45,11 +70,54 @@ const getAllScheduleWithSt = async (id_user, status) => {
 
 }
 
+const getScheduleDetailById = async (id_schedule_detail) => {
+    return await scheduleDetailModel.findOne({
+        where: { id_schedule_detail }
+    })
+}
+
+
+const createSchedule = async (id_user, id_drug_application) => {
+    return scheduleModel.create({
+        id_user,
+        id_drug_application,
+        status: false
+    })
+}
+
+const findScheduleByDrugApplication = async (id_drug_application) => {
+    return await scheduleModel.findOne({
+        id_drug_application
+    })
+}
+
+const createScheduleDetail = async ({ id_app_detail, id_schedule, listScheduleDetail }) => {
+    for (let index = 0; index < listScheduleDetail.length; index++) {
+        const schedule = listScheduleDetail[index];
+        console.log("DEBUG: " + schedule)
+    }
+
+    const scheduleDetails = listScheduleDetail.map(time_use => ({
+        id_app_detail,
+        id_schedule,
+        status: false,
+        quantity_used: 0,
+        time_use
+    }));
+
+    // bulkCreate có thể tạo nhiều bảng ghi một lúc
+    return await scheduleDetailModel.bulkCreate(scheduleDetails);
+};
+
 
 module.exports = {
     updateScheduleDetail,
     deleteScheduleDetail,
     addSchedileDetail,
     getAllScheleDetailFromIdDrugDetail,
-    getAllScheduleWithSt
+    getAllScheduleWithSt,
+    getScheduleDetailById,
+    createSchedule,
+    findScheduleByDrugApplication,
+    createScheduleDetail
 }

@@ -7,7 +7,7 @@ class ScheduleController {
     updateScheDetail = async (req, res, next) => {
         new SuccessResponse({
             message: "Update schedule detail successfully!",
-            metadata: await ScheduleService.updateStatusScheDetail(req.params.id_schedule_detail)
+            metadata: await ScheduleService.updateStatusScheDetail(req.params.id_schedule_detail, req.body)
         }).send(res)
     }
 
