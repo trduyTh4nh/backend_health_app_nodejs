@@ -9,5 +9,6 @@ const router = express.Router()
 router.use(authentication)
 router.put('/updateProfile/:id_user', asyncHandler(userController.updateProfile))
 router.get('/getUserInformation/:id_user', asyncHandler(userController.getUserInformation))
+router.put('/changePassword', asyncHandler(userController.updatePassword))
 
 module.exports = router

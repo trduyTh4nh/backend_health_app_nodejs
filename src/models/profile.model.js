@@ -27,6 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         avatar: {
             type: DataTypes.STRING(500)
+        },
+        phone: {
+            type: DataTypes.STRING(20)
+        },
+        full_name: {
+            type: DataTypes.STRING(50)
         }
     }, {
         tableName: 'profile',

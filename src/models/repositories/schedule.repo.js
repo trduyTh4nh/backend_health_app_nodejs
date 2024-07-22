@@ -11,9 +11,7 @@ const updateScheduleDetail = async (id_schedule_detail) => {
     const scheduleDetail = await scheduleDetailModel.findOne({
         where: { id_schedule_detail }
     })
-
-
-
+    
     // const foundApplicationDetailFromScheduleDetail = await drugApplicationModel.findOne({
     //     where: { id_app_detail: scheduleDetail.id_app_detail }
     // })
@@ -24,7 +22,7 @@ const updateScheduleDetail = async (id_schedule_detail) => {
         { where: { id_schedule_detail } }
     );
 
-    await decrementDrugUsed(scheduleDetail.id_app_detail)
+    // await decrementDrugUsed(scheduleDetail.id_app_detail)
 
     return await scheduleDetailModel.update(
         { status: true },

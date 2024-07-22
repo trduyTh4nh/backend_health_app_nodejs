@@ -36,7 +36,9 @@ const Address = require('../models/address.model')(sequelizes, DataTypes)
 const PaymentInfo = require('../models/paymentInfo.model')(sequelizes, DataTypes)
 const Log = require('../models/logs.model')(sequelizes, DataTypes)
 const Hospital = require('../models/hospital.model')(sequelizes, DataTypes)
-
+const Payment = require('../models/payment.model')(sequelizes, DataTypes)
+const Invoice = require('../models/invoice.model')(sequelizes, DataTypes)
+const InvoiceDetail = require('../models/invoiceDetail.model')(sequelizes, DataTypes)
 defineAssociations(sequelizes);
 
 sequelizes.sync({ force: false }).then(() => {

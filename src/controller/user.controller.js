@@ -1,7 +1,7 @@
 'use strict'
 
 const { SuccessResponse } = require("../core/success.response")
-const { updateProfileUser, getUserProfile } = require("../service/user.service")
+const { updateProfileUser, getUserProfile, updateChangePassword } = require("../service/user.service")
 
 class UserController {
     updateProfile = async (req, res, next) => {
@@ -14,6 +14,13 @@ class UserController {
         new SuccessResponse({
             message: "Get user information successfully!",
             metadata: await getUserProfile(req.params.id_user)
+        }).send(res)
+    }
+
+    updatePassword = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Update password successfully!",
+            metadata: await updateChangePassword(req.body)
         }).send(res)
     }
 }

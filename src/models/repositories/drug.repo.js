@@ -115,7 +115,7 @@ const decrementDrugUsed = async (id_app_detail) => {
         throw new NotFoundError('Minium quantity! ')
     }
 
-    await foundApplicationDetail.increment('quantity_used', {
+    await foundApplicationDetail.increment('quantity', {
         by: -1
     })
 }
@@ -135,11 +135,17 @@ const getApplicationByIdApplication = async (id) => {
 
 const scanDrugApplicationUpdate = async (id_user, id_application) => {
     const foundDrugApplication = await DrugApplication.findOne({
-        id: id_application
+        where: { id: id_application }
     })
+
+    // const foundUserInDrugApplication = await DrugApplication.findOne({
+
+    //     where: { id_user: id_user }
+    // })
     if (foundDrugApplication.id_user) {
         throw new BadRequestError('You does not have permission!')
     }
+
     return await DrugApplication.update({
         id_user
     }, {
@@ -170,6 +176,35 @@ const createApplicationDetail = async ({
     })
 }
 
+const incrementQuantityUsed = async (id_app_detail) => {
+    try {
+        const foundApplicationDetail = await DrugApplicationDetail.findOne({ where: { id_app_detail } });
+
+        // Kiểm tra nếu không tìm thấy id_app_detail
+        if (!foundApplicationDetail) {
+            console.error(`No application detail found for id_app_detail: ${id_app_detail}`);
+            throw new Error(`Application detail not found for id_app_detail: ${id_app_detail}`);
+        }
+
+        console.log("DEBUG APPLICATION DETAIL: ", foundApplicationDetail.id_app_detail);
+        console.log("DEBUG APPLICATION DETAIL: ", foundApplicationDetail.quantity_used);
+
+        // Sử dụng hàm increment để tăng quantity_used
+        await foundApplicationDetail.increment('quantity_used', { by: 1 });
+
+
+        await foundApplicationDetail.reload();
+
+        console.log("UPDATED APPLICATION DETAIL: ", foundApplicationDetail.quantity_used);
+
+        return foundApplicationDetail; // Trả về đối tượng đã được tăng
+    } catch (error) {
+        console.error(`Error incrementing quantity_used for id_app_detail: ${id_app_detail}`, error);
+        throw new Error(`Error incrementing quantity_used: ${error.message}`);
+    }
+};
+
+
 
 
 module.exports = {
@@ -190,5 +225,6 @@ module.exports = {
     getApplicationDetailById,
     getApplicationByIdApplication,
     scanDrugApplicationUpdate,
-    createApplicationDetail
+    createApplicationDetail,
+    incrementQuantityUsed
 }

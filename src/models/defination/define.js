@@ -1,7 +1,11 @@
 
 
 const defineAssociations = (sequelize) => {
-    const { User, DrugApplication, Schedule, ScheduleDetail, Drug, Brand, DrugApplicationDetail, UserToken, Cart, CartDetail, PaymentInfo, Hospital } = sequelize.models;
+    const { User, DrugApplication, Schedule, ScheduleDetail, 
+        Drug, Brand, DrugApplicationDetail, UserToken, Cart, 
+        CartDetail, PaymentInfo, Hospital, Invoice,
+        InvoiceDetail
+    } = sequelize.models;
 
     // một user có nhiều đơn thuốc
     User.hasMany(DrugApplication, {
@@ -95,6 +99,19 @@ const defineAssociations = (sequelize) => {
         foreignKey: 'id_hospital',
         onDelete: 'CASCADE'
     })
+
+    Invoice.belongsTo(User, {
+        foreignKey: 'id_user',
+    })
+
+    Invoice.hasMany(InvoiceDetail, {
+        foreignKey: 'id_invoice'
+    })
+
+    InvoiceDetail.belongsTo(Drug, {
+        foreignKey: 'id_drug'
+    })
+    
 
     
 

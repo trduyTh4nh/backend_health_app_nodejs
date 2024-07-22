@@ -1,7 +1,7 @@
 'use strict'
 
 const { BadRequestError, NotFoundError } = require("../core/error.response")
-const { getAllApplication, getApplicationDetailById, getApplicationByIdApplication } = require("../models/repositories/drug.repo")
+const { getAllApplication, getApplicationDetailById, getApplicationByIdApplication, incrementQuantityUsed } = require("../models/repositories/drug.repo")
 const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt, getScheduleDetailById } = require("../models/repositories/schedule.repo")
 const { findUserById } = require("../models/repositories/user.repo")
 const { isValidTimeFormat } = require("../utils")
@@ -10,26 +10,43 @@ const { insertLog } = require("./logs.service")
 class ScheduleService {
     static updateStatusScheDetail = async (id_schedule_detail, payload) => {
         try {
-
+            // Kiểm tra id_schedule_detail
             if (!id_schedule_detail) {
-                throw new NotFoundError('id_schedule_detail not found')
+                throw new NotFoundError('id_schedule_detail not found');
             }
-            const date_save = new Date().toLocaleDateString()
-            const { id_user } = payload
-            await insertLog({ id_schedule_detail, date_save, id_user })
 
-          //  var scheduleDetail = await getScheduleDetailById(id_schedule_detail)
 
-            // var applicationDetail = await getApplicationDetailById(scheduleDetail.id_app_detail)
+            // Lấy id_user từ payload
+            const { id_user } = payload;
+            if (!id_user) {
+                throw new BadRequestError('id_user is required');
+            }
 
-            // var application = await getApplicationByIdApplication(applicationDetail.id_drug_application)
+            // Lưu log với thời gian hiện tại
+            const date_save = new Date().toLocaleDateString();
+            await insertLog({ id_schedule_detail, date_save, id_user });
 
-            // var id_user = application.id_user
+            // Lấy thông tin chi tiết của schedule
+            const findScheduleDetail = await getScheduleDetailById(id_schedule_detail);
+            if (!findScheduleDetail) {
+                throw new NotFoundError('Schedule detail not found');
+            }
 
-            return await updateScheduleDetail(id_schedule_detail)
+            // Tăng số lượng thuốc đã sử dụng lên 1
+            await incrementQuantityUsed(findScheduleDetail.id_app_detail);
+
+            // Cập nhật trạng thái của schedule
+            const updatedScheduleDetail = await updateScheduleDetail(id_schedule_detail);
+            if (!updatedScheduleDetail) {
+                throw new BadRequestError('Failed to update schedule detail');
+            }
+
+            return updatedScheduleDetail;
         } catch (error) {
-            throw new BadRequestError(error)
+            console.error('Error in updateStatusScheDetail:', error);
+            throw new BadRequestError(error.message);
         }
+
     }
     static deleteScheduleDetail = async (id_schedule_detail) => {
         try {

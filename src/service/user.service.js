@@ -2,12 +2,12 @@
 const { where } = require('sequelize');
 const sequelize = require('../db/init.sequelize')
 const DataTypes = require('sequelize').DataTypes;
-
+const bcrypt = require('bcrypt')
 const User = require('../models/user.model')(sequelize, DataTypes)
 
 const { NotFoundError, BadRequestError } = require('../core/error.response');
 const S3Service = require('./s3AWS.service');
-const { updateProfile, getUserAndProfile } = require('../models/repositories/user.repo');
+const { updateProfile, getUserAndProfile, updatePassword } = require('../models/repositories/user.repo');
 const { REQUESTED_RANGE_NOT_SATISFIABLE } = require('../utils/statusCode');
 
 const findUserByEmail = async (email) => {
@@ -35,7 +35,7 @@ const updateProfileUser = async (payload, req, res, id_user) => {
     if (uploadAvatar.files.singlefile) {
         avatar = uploadAvatar.files.singlefile[0].location
     }
-   
+
 
     const updatedUser = await updateProfile(id_user, {
         height: req.body.height,
@@ -43,7 +43,9 @@ const updateProfileUser = async (payload, req, res, id_user) => {
         age: req.body.age,
         gender: req.body.gender,
         address: req.body.address,
-        avatar: avatar
+        avatar: avatar,
+        phone: req.body.phone,
+        full_name: req.body.full_name
     })
 
     if (!updatedUser) {
@@ -65,10 +67,19 @@ const getUserProfile = async (id_user) => {
     return result
 }
 
+const updateChangePassword = async (payload) => {
+    const { id_user, repass } = payload
+    const stalt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(repass, stalt)
+
+    return await updatePassword(id_user, hashedPassword)
+}
+
 module.exports = {
     findUserByEmail,
     findUserByUserName,
     findUserById,
     updateProfileUser,
-    getUserProfile
+    getUserProfile,
+    updateChangePassword
 }

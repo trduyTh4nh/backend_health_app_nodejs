@@ -2,6 +2,7 @@
 const { where } = require('sequelize');
 const sequelize = require('../../db/init.sequelize');
 const { getInfoData } = require('../../utils');
+const { NotFoundError } = require('../../core/error.response');
 const DataTypes = require('sequelize').DataTypes;
 
 const User = require('../user.model')(sequelize, DataTypes)
@@ -24,7 +25,9 @@ const updateProfile = async (id_user,
         age,
         gender,
         address,
-        avatar
+        avatar,
+        phone,
+        full_name
     }
 ) => {
 
@@ -34,7 +37,9 @@ const updateProfile = async (id_user,
         age,
         gender,
         address,
-        avatar
+        avatar,
+        phone,
+        full_name
     }, {
         where: { id_user: id_user }
     })
@@ -46,11 +51,13 @@ const getUserAndProfile = async (id_user) => {
     const user = await User.findOne({ where: { id_user } })
 
     const profile = await Profile.findOne({ where: { id_user: id_user } })
-    const infodata = getInfoData({fields: [
-        'id_user',
-        'username',
-        'email'
-    ], object: user.dataValues})
+    const infodata = getInfoData({
+        fields: [
+            'id_user',
+            'username',
+            'email'
+        ], object: user.dataValues
+    })
     return {
         ...infodata,
         profile: profile
@@ -58,11 +65,30 @@ const getUserAndProfile = async (id_user) => {
 }
 
 
+const updatePassword = async (id_user, repass) => {
+
+    const foundUser = await User.findOne({
+        where: { id_user }
+    })
+
+    if (!foundUser) {
+        throw new NotFoundError('User not found!')
+    }
+
+    return await User.update({
+        password: repass
+    }, {
+        where: { id_user }
+    })
+
+}
+
 
 
 module.exports = {
     findUserById,
     findUserInCart,
     updateProfile,
-    getUserAndProfile
+    getUserAndProfile,
+    updatePassword
 }

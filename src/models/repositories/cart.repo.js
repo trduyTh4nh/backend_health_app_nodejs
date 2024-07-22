@@ -33,16 +33,22 @@ const addDrugToCart = async ({
 
     const existingCart = await Cart.findOne({ where: { id_cart: id_cart } })
     if (!existingCart) {
-        throw new Error('Cart does not exist!')
+        throw new BadRequestError('Cart does not exist!')
     }
 
     const existingDrug = await Drug.findOne({ where: { id_drug: id_drug } })
 
     if (!existingDrug) {
-        throw new Error('Drug does not exist!')
+        throw new BadRequestError('Drug does not exist!')
     }
 
+    const checkDrugInCart = await CartDetail.findOne({
+        where: { id_cart: id_cart, id_drug: id_drug }
+    })
 
+    if (checkDrugInCart) {
+        throw new BadRequestError('Drug already exist in cart!')
+    }
 
     return await CartDetail.upsert({
         id_drug,
@@ -88,18 +94,24 @@ const updateQuantityCart = async ({ cart, quantity }) => {
         }
         listFiltered[k] = {
             ...listFiltered[k].dataValues,
-            quantityDrugDetail: count
+            //   quantityDrugDetail: count
         }
         count = 0
+
+
+    }
+    var total = 0;
+    for (let index = 0; index < listFiltered.length; index++) {
+        total += listFiltered[index].quantity
     }
 
     return {
         numberTypeOfDifferentDrugs: listFiltered.length,
-        quantityTotal: listDrugCartDt.length,
+        quantityTotal: total,
         listDrugCartDt: listFiltered,
     };
 
-  
+
 };
 
 // tạo update quantity cart detail
@@ -125,53 +137,46 @@ const findCartByIdUser = async (id_user) => {
 }
 
 const getAllProductInCartOfUser = async (id_user) => {
-    const findCartOfUser = await Cart.findOne({ where: { id_user: id_user } })
+    const findCartOfUser = await Cart.findOne({ where: { id_user: id_user } });
     if (!findCartOfUser) {
-        throw new NotFoundError('Can not found cart!')
+        throw new NotFoundError('Can not found cart!');
     }
 
-    const listCartDetail = await CartDetail.findAll({ where: { id_cart: findCartOfUser.id_cart } })
+    const listCartDetail = await CartDetail.findAll({ where: { id_cart: findCartOfUser.id_cart } });
 
     if (listCartDetail.length === 0) {
-        return []
+        return [];
     }
 
+    // Loại bỏ các mục trùng lặp dựa trên id_drug và giữ nguyên thứ tự
     const listFiltered = [];
+    const seenDrugs = new Set();
 
-    for (let i = 0; i < listCartDetail.length; i++) {
-        var isDuplicate = false;
-        for (let j = 0; j < listFiltered.length; j++) {
-            if (listCartDetail[i].id_drug === listFiltered[j].id_drug) {
-                isDuplicate = true;
-                break;
-            }
+    listCartDetail.forEach((item) => {
+        if (!seenDrugs.has(item.id_drug)) {
+            seenDrugs.add(item.id_drug);
+            listFiltered.push(item);
         }
-        if (!isDuplicate) {
-            listFiltered.push(listCartDetail[i]);
-        }
-    }
+    });
 
-    var count = 0;
+    // Thêm thông tin thuốc và giữ nguyên thứ tự
     for (let k = 0; k < listFiltered.length; k++) {
-        for (let i = 0; i < listCartDetail.length; i++) {
-            if (listFiltered[k].id_drug === listCartDetail[i].id_drug) {
-                count++
-            }
-        }
-        const drug = await drugModel.findOne({ where: { id_drug: listFiltered[k].id_drug } })
+        const id_drug = listFiltered[k].id_drug;
+        const drug = await drugModel.findOne({ where: { id_drug } });
+
         listFiltered[k] = {
             ...listFiltered[k].dataValues,
-            quantityDrugDetail: count,
+            quantityDrugDetail: listCartDetail.filter((detail) => detail.id_drug === id_drug).length,
             drug: drug
-        }
-        count = 0
+        };
     }
 
-
+    listFiltered.sort((a, b) => a.id_cart_detail - b.id_cart_detail);
     return {
         listFiltered
-    }
-}
+    };
+};
+
 
 const deleteDrugInCart = async (id_cart_detail) => {
 
