@@ -204,6 +204,24 @@ const incrementQuantityUsed = async (id_app_detail) => {
     }
 };
 
+const getDrugFromDrugApplicationDetail = async (id_drug_application_detail) => {
+    const foundDrugAppDetail = await DrugApplicationDetail.findOne({
+        where: { id_app_detail: id_drug_application_detail }
+    })
+
+    if (!foundDrugAppDetail) {
+        throw new NotFoundError('Not found drug application detail!')
+    }
+
+    const result = await drugModel.findOne({
+        where: { id_drug: foundDrugAppDetail.id_drug }
+    })
+    return {
+        ...foundDrugAppDetail.dataValues,
+        drug: result
+    }
+}
+
 
 
 
@@ -226,5 +244,6 @@ module.exports = {
     getApplicationByIdApplication,
     scanDrugApplicationUpdate,
     createApplicationDetail,
-    incrementQuantityUsed
+    incrementQuantityUsed,
+    getDrugFromDrugApplicationDetail
 }

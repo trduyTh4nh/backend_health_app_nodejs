@@ -111,9 +111,6 @@ const defineAssociations = (sequelize) => {
     InvoiceDetail.belongsTo(Drug, {
         foreignKey: 'id_drug'
     })
-    
-
-    
 
 };
 

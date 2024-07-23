@@ -17,7 +17,8 @@ const { getDrugApplicationByUser,
     searchDrug,
     getDrugApplicationByIdApplication,
     scanDrugApplicationUpdate,
-    createApplicationDetail
+    createApplicationDetail,
+    getDrugFromDrugApplicationDetail
 } = require("../models/repositories/drug.repo")
 const { NotBeforeError } = require("jsonwebtoken")
 const { findUserById } = require("../models/repositories/user.repo")
@@ -93,6 +94,11 @@ class DrugService {
 
     static searchDrugFunc = async (data) => {
         return await searchDrug(data)
+    }
+
+    static getDrugFromDrugDetailApp = async ({ id_app_detail }) => {
+        const result = await getDrugFromDrugApplicationDetail(id_app_detail)
+        return result
     }
 
 
@@ -172,7 +178,7 @@ class DrugService {
     //         amount_per_consumption,
     //         quantity
     //     })
-        
+
 
     //     // kiểm tra nếu lịch được tạo mới thì lấy id lịch mới và ngược lại
     //     if(newSchedule){
@@ -234,7 +240,7 @@ class DrugService {
             if (!scheduleDetailResult) {
                 throw new BadRequestError('Failed to create schedule detail');
             }
-            
+
             return {
                 drugAppDetail,
                 scheduleDetailResult

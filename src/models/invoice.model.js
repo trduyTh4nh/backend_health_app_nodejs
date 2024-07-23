@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         id_address: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        id_paypal: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
 
     }, {

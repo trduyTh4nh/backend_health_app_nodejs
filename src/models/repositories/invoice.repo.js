@@ -32,25 +32,27 @@ const createInvoice = async ({
     total_price,
     status,
     notes,
-    id_address
+    id_address,
+    id_paypal
 }) => {
-
-
     return await invoiceModel.create({
         id_user,
         create_date,
         total_price,
         status,
         notes,
-        id_address
+        id_address,
+        id_paypal
     })
 }
 
 const insertListInvoiceDetail = async ({ listDrugCart, id_invoice }) => {
     try {
+
         const listInvoiceDetail = listDrugCart.map(item => ({
             id_drug: item.id_drug,
             quantity: item.quantity,
+
             id_invoice
         }));
 

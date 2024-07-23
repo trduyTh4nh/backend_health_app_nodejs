@@ -73,6 +73,13 @@ class DrugController {
             metadata: await DrugService.addDrugNotifyCustom(req.body)
         }).send(res)
     }
+
+    getDrugFromDrugAppDetail = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get drug successfully!",
+            metadata: await DrugService.getDrugFromDrugDetailApp(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new DrugController()

@@ -18,4 +18,5 @@ router.get('/searchDrug', asyncHandler(drugController.searchFunction))
 router.get('/getAllDrugAppBy/:id_app', asyncHandler(drugController.getAllApplicationByIdApplication))
 router.put('/scan', asyncHandler(drugController.scanDrugApplication))
 router.post('/addDrugCustom', asyncHandler(drugController.addDrugCustomNotification))
+router.get('/getDrugFromDetail', asyncHandler(drugController.getDrugFromDrugAppDetail))
 module.exports = router 
