@@ -20,7 +20,8 @@ const { getDrugApplicationByUser,
     createApplicationDetail,
     getDrugFromDrugApplicationDetail,
     getAllHostpital,
-    searchHospital
+    searchHospital,
+    getApplicationAppendHospital
 } = require("../models/repositories/drug.repo")
 const { NotBeforeError } = require("jsonwebtoken")
 const { findUserById } = require("../models/repositories/user.repo")
@@ -261,6 +262,10 @@ class DrugService {
     static searchHospitalWithName = async (keySearch) => {
         const resultSearch = await searchHospital(keySearch)
         return resultSearch
+    }
+
+    static appendHospitalInDrugApp = async (id_application) => {
+        return await getApplicationAppendHospital(id_application)
     }
     
 

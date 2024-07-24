@@ -108,7 +108,6 @@ const createScheduleDetail = async ({ id_app_detail, id_schedule, listScheduleDe
 };
 
 const findScheduleDetailById = async (id_schedule_detail) => {
-
     return await scheduleDetailModel.findOne({
         where: { id_schedule_detail }
     })

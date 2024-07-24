@@ -17,6 +17,14 @@ class NotificationController {
             metadata: await NotificationService.getAllNotificationUser(req.params.id_user)
         }).send(res)
     }
+
+    removeNotification = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Remove notification successfully!",
+            metadata: await NotificationService.deleteNotification(req.params.id_notify)
+        }).send(res)
+    }
+    
 }
 
 module.exports = new NotificationController()

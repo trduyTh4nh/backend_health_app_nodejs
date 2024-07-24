@@ -61,6 +61,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_hospital: {
             type: DataTypes.INTEGER
+        },
+        id_disease: {
+            type: DataTypes.INTEGER
         }
     }, {
         tableName: 'drug_application',

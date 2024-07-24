@@ -7,4 +7,5 @@ const router = express.Router()
 router.use(authentication)
 router.post('/createNotification', asyncHandler(notificationController.notify))
 router.get('/getAllNotification/:id_user', asyncHandler(notificationController.getAllNotification))
+router.delete('/deleteNotification/:id_notify', asyncHandler(notificationController.removeNotification))
 module.exports = router

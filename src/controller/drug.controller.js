@@ -1,6 +1,7 @@
 'use strict'
 
 const { SuccessResponse } = require("../core/success.response")
+const { updateImageDrug } = require("../models/repositories/drug.repo")
 const DrugService = require("../service/drug.service")
 
 class DrugController {
@@ -88,10 +89,24 @@ class DrugController {
         }).send(res)
     }
 
-    searchHospital = async(req, res, next) => {
+    searchHospital = async (req, res, next) => {
         new SuccessResponse({
             message: "Result search",
             metadata: await DrugService.searchHospitalWithName(req.query.searchKey)
+        }).send(res)
+    }
+
+    appendHostpitalInApp = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get data successfully!",
+            metadata: await DrugService.appendHospitalInDrugApp(req.params.id_app)
+        }).send(res)
+    }
+
+    updateDrug = async (req, res, next) => {
+        new SuccessResponse({
+            message: "update successfully!",
+            metadata: await updateImageDrug(req.body)
         }).send(res)
     }
 }

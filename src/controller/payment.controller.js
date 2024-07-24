@@ -17,6 +17,19 @@ class PaymentController {
             metadata: await PaymentService.getAllInvoiceOfUser(req.params.id_user)
         }).send(res)
     }
+    getAllOrder = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get all order successfully!",
+            metadata: await PaymentService.getOrderUser(req.params.id_user)
+        }).send(res)
+    }
+
+    getInvoiceById = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get invoice successfully!",
+            metadata: await PaymentService.getInvoiceById(req.params.id_invoice)
+        }).send(res)
+    }
 }
 
 module.exports = new PaymentController()

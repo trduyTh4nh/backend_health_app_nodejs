@@ -16,7 +16,11 @@ const sequelizes = new Sequelize({
     host: HOST,
     port: PORT,
     dialect: 'postgres',
-    logging: false
+    logging: false,
+    dialectOptions: {
+        useUTC: false
+    },
+    timezone: '+07:00'
 })
 
 

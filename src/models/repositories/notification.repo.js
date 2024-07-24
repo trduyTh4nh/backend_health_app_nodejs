@@ -34,7 +34,21 @@ const getAllNotification = async (id_user) => {
     })
 }
 
+const removeNotification = async (id_notify) => {
+    return await notificationModel.destroy({
+        where: { id_notify }
+    })
+}
+
+const findNotificationFromId = async (id_notify) => {
+    return await notificationModel.findOne({
+        where: { id_notify }
+    })
+}
+
 module.exports = {
     createNotification,
-    getAllNotification
+    getAllNotification,
+    removeNotification,
+    findNotificationFromId
 }

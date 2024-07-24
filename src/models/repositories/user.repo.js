@@ -108,6 +108,12 @@ const searchUserByUserName = async (keySearch) => {
     }
 }
 
+const findProfileUser = async (id_user) => {
+    return await Profile.findOne({
+        where: { id_user }
+    })
+}
+
 module.exports = {
     findUserById,
     findUserInCart,
@@ -116,5 +122,6 @@ module.exports = {
     updatePassword,
     createProfile,
     getAllUser,
-    searchUserByUserName
+    searchUserByUserName,
+    findProfileUser
 }

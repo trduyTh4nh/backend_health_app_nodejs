@@ -19,6 +19,9 @@ router.get('/getAllDrugAppBy/:id_app', asyncHandler(drugController.getAllApplica
 router.put('/scan', asyncHandler(drugController.scanDrugApplication))
 router.post('/addDrugCustom', asyncHandler(drugController.addDrugCustomNotification))
 router.get('/getDrugFromDetail', asyncHandler(drugController.getDrugFromDrugAppDetail))
+router.get('/getAppendHospital/:id_app', asyncHandler(drugController.appendHostpitalInApp))
+// test
+router.put('/updateImageDrug', asyncHandler(drugController.updateDrug))
 
 router.use(authenticationVersion2)
 router.get('/getAllHospital', asyncHandler(drugController.getAllHospital))

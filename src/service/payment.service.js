@@ -2,7 +2,7 @@
 
 
 const { BadRequestError, NotFoundError } = require('../core/error.response');
-const { createInvoice, insertListInvoiceDetail, getAllInvoice } = require('../models/repositories/invoice.repo');
+const { createInvoice, insertListInvoiceDetail, getAllInvoice, getInvoiceUser, getInvoiceById } = require('../models/repositories/invoice.repo');
 const { findUserById } = require('./user.service');
 
 
@@ -42,7 +42,8 @@ class PaymentService {
 
             return {
                 success: true,
-                invoice
+                invoice,
+                id_invoice: invoice.id_invoice,
             };
         } catch (error) {
             console.error('Error creating invoice or inserting invoice details:', error);
@@ -53,16 +54,33 @@ class PaymentService {
 
 
     static getAllInvoiceOfUser = async (id_user) => {
-  
+
         const foundUser = await findUserById(id_user)
 
         if (!foundUser) {
             throw NotFoundError('User not found!')
         }
+
         return await getAllInvoice(id_user)
     }
 
-    
+
+    static getOrderUser = async (id_user) => {
+        const foundUser = await findUserById(id_user)
+        if (!foundUser) {
+            throw new NotFoundError('User not found!')
+        }
+        return await getInvoiceUser(foundUser.id_user)
+    }
+
+    static getInvoiceById = async (id_invoice) => {
+        return await getInvoiceById(id_invoice)
+    }
+
+
+
+
+
 }
 
 

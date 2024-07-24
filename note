@@ -98,5 +98,11 @@ var enumPriority = [
   => lấy id_schedule của đơn thuốc mà thằng Quang chọn để insert vào schedule_detail khi tạo 
 '
 
-'
-'
+
+-- lấy toàn bộ invoice của user
+-- trong invoice có invoice detail
+
+-- lấy đơn thuốc lồng bệnh viện trong đó
+-- xóa notificaiton
+
+-- insert payment return id_order
