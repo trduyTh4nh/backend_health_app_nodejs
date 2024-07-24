@@ -1,8 +1,9 @@
 'use strict';
 
 
-const { BadRequestError } = require('../core/error.response');
-const { createInvoice, insertListInvoiceDetail } = require('../models/repositories/invoice.repo');
+const { BadRequestError, NotFoundError } = require('../core/error.response');
+const { createInvoice, insertListInvoiceDetail, getAllInvoice } = require('../models/repositories/invoice.repo');
+const { findUserById } = require('./user.service');
 
 
 class PaymentService {
@@ -49,6 +50,19 @@ class PaymentService {
             throw new BadRequestError('Payment initiation failed. Please try again later.');
         }
     }
+
+
+    static getAllInvoiceOfUser = async (id_user) => {
+  
+        const foundUser = await findUserById(id_user)
+
+        if (!foundUser) {
+            throw NotFoundError('User not found!')
+        }
+        return await getAllInvoice(id_user)
+    }
+
+    
 }
 
 

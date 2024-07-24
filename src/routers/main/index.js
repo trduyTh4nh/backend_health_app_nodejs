@@ -12,6 +12,7 @@ router.use('/v1/api/address', require('../address'))
 router.use('/v1/api/user', require('../user'))
 router.use('/v1/api/log', require('../logs'))
 router.use('/v1/api/payment', require('../payment'))
+router.use('/v1/api/notification', require('../notification'))
 
 // special api
 router.post('/v1/api/image-upload', asyncHandler(uploadController.uploadFile))

@@ -2,7 +2,7 @@
 
 const { BadRequestError, NotFoundError } = require("../core/error.response")
 const { getAllApplication, getApplicationDetailById, getApplicationByIdApplication, incrementQuantityUsed } = require("../models/repositories/drug.repo")
-const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt, getScheduleDetailById } = require("../models/repositories/schedule.repo")
+const { updateScheduleDetail, deleteScheduleDetail, addSchedileDetail, getAllScheleDetailFromIdDrugDetail, getAllScheduleWithSt, getScheduleDetailById, findIdScheduleFromAppDetail } = require("../models/repositories/schedule.repo")
 const { findUserById } = require("../models/repositories/user.repo")
 const { isValidTimeFormat } = require("../utils")
 const { insertLog } = require("./logs.service")
@@ -59,24 +59,36 @@ class ScheduleService {
         }
     }
     static insertScheduleDetail = async (payload) => {
-        try {
-            console.log(payload)
-            if (!payload) {
-                throw new NotFoundError('Not found data to insert');
-            }
-            const { id_app_detail, id_schedule, quantity_used, time_use, status = false } = payload;
-
-            if (!id_app_detail || !id_schedule || !quantity_used || !time_use) {
-                throw new BadRequestError('Missing required fields');
-            }
-            if (!isValidTimeFormat(time_use)) {
-                throw new BadRequestError('Not valid time!')
-            }
-            return await addSchedileDetail({ id_app_detail, id_schedule, status, quantity_used, time_use });
-
-        } catch (error) {
-            throw new BadRequestError(error)
+        console.log(payload)
+        if (!payload) {
+            throw new NotFoundError('Not found data to insert');
         }
+        const { id_app_detail, id_schedule, quantity_used, time_use, status = false } = payload;
+
+
+        if (!id_app_detail || !quantity_used || !time_use) {
+            throw new BadRequestError('Missing required fields');
+        }
+
+
+        if (!isValidTimeFormat(time_use)) {
+            throw new BadRequestError('Not valid time!')
+        }
+
+        if (!id_schedule) {
+            const idSchedule = await findIdScheduleFromAppDetail(id_app_detail)
+
+            console.log("DEBUG idSchedule: ", idSchedule)
+            return await addSchedileDetail({
+                id_app_detail,
+                id_schedule: idSchedule,
+                status,
+                quantity_used, time_use
+            });
+
+        }
+        return await addSchedileDetail({ id_app_detail, id_schedule, status, quantity_used, time_use });
+
     }
 
     static getAllScheduleDetailFromIdDrugDetail = async (id_app_detail) => {

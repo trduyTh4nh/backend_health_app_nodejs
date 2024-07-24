@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         create_date: {
             type: DataTypes.DATE
+        },
+        avatar: {
+            type: DataTypes.STRING(500)
         }
     }, {
         tableName: 'hospital',

@@ -80,6 +80,20 @@ class DrugController {
             metadata: await DrugService.getDrugFromDrugDetailApp(req.body)
         }).send(res)
     }
+
+    getAllHospital = async (req, res, next) => {
+        new SuccessResponse({
+            message: "get all user successfully!",
+            metadata: await DrugService.getAllHospitalFunc()
+        }).send(res)
+    }
+
+    searchHospital = async(req, res, next) => {
+        new SuccessResponse({
+            message: "Result search",
+            metadata: await DrugService.searchHospitalWithName(req.query.searchKey)
+        }).send(res)
+    }
 }
 
 module.exports = new DrugController()

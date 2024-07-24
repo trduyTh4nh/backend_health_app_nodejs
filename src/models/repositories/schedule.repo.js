@@ -11,7 +11,7 @@ const updateScheduleDetail = async (id_schedule_detail) => {
     const scheduleDetail = await scheduleDetailModel.findOne({
         where: { id_schedule_detail }
     })
-    
+
     // const foundApplicationDetailFromScheduleDetail = await drugApplicationModel.findOne({
     //     where: { id_app_detail: scheduleDetail.id_app_detail }
     // })
@@ -85,7 +85,7 @@ const createSchedule = async (id_user, id_drug_application) => {
 
 const findScheduleByDrugApplication = async (id_drug_application) => {
     return await scheduleModel.findOne({
-        id_drug_application
+        where: { id_drug_application }
     })
 }
 
@@ -107,6 +107,29 @@ const createScheduleDetail = async ({ id_app_detail, id_schedule, listScheduleDe
     return await scheduleDetailModel.bulkCreate(scheduleDetails);
 };
 
+const findScheduleDetailById = async (id_schedule_detail) => {
+
+    return await scheduleDetailModel.findOne({
+        where: { id_schedule_detail }
+    })
+}
+
+const findIdScheduleFromAppDetail = async (id_app_detail) => {
+    const findScheduleDetail = await scheduleDetailModel.findOne({
+        where: { id_app_detail }
+    })
+    return findScheduleDetail.id_schedule
+}
+
+
+const findIdApplicationDetail = async (id_schedule_detail) => {
+
+    return await scheduleDetailModel.findOne({
+        where: { id_schedule_detail }
+    })
+}
+
+
 
 module.exports = {
     updateScheduleDetail,
@@ -117,5 +140,8 @@ module.exports = {
     getScheduleDetailById,
     createSchedule,
     findScheduleByDrugApplication,
-    createScheduleDetail
+    createScheduleDetail,
+    findScheduleDetailById,
+    findIdScheduleFromAppDetail,
+    findIdApplicationDetail
 }

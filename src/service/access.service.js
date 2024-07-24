@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const { getInfoData } = require("../utils");
 const { saveToken } = require("./token.service");
 const { deleteToken } = require("../models/repositories/token.repo");
+const { createProfile } = require("../models/repositories/user.repo");
 require('dotenv').config()
 
 
@@ -39,6 +40,8 @@ class AccessService {
                 name,
                 phone
             })
+
+            await createProfile(user.id_user)
 
             return {
                 code: 201,

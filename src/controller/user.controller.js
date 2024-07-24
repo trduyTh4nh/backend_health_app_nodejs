@@ -1,7 +1,8 @@
 'use strict'
 
 const { SuccessResponse } = require("../core/success.response")
-const { updateProfileUser, getUserProfile, updateChangePassword } = require("../service/user.service")
+const { searchUserByUserName } = require("../models/repositories/user.repo")
+const { updateProfileUser, getUserProfile, updateChangePassword, getAllUserFunc } = require("../service/user.service")
 
 class UserController {
     updateProfile = async (req, res, next) => {
@@ -21,6 +22,20 @@ class UserController {
         new SuccessResponse({
             message: "Update password successfully!",
             metadata: await updateChangePassword(req.body)
+        }).send(res)
+    }
+
+    getAllUser = async (req, res, next) => {
+        new SuccessResponse({
+            message: "get all user successfully!",
+            metadata: await getAllUserFunc()
+        }).send(res)
+    }
+
+    searchUser = async(req, res, next) => {
+        new SuccessResponse({
+            message: "Result search",
+            metadata: await searchUserByUserName(req.query.searchKey)
         }).send(res)
     }
 }

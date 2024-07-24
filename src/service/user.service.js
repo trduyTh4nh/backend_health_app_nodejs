@@ -7,7 +7,7 @@ const User = require('../models/user.model')(sequelize, DataTypes)
 
 const { NotFoundError, BadRequestError } = require('../core/error.response');
 const S3Service = require('./s3AWS.service');
-const { updateProfile, getUserAndProfile, updatePassword } = require('../models/repositories/user.repo');
+const { updateProfile, getUserAndProfile, updatePassword, getAllUser, searchUserByUserName } = require('../models/repositories/user.repo');
 const { REQUESTED_RANGE_NOT_SATISFIABLE } = require('../utils/statusCode');
 
 const findUserByEmail = async (email) => {
@@ -75,11 +75,23 @@ const updateChangePassword = async (payload) => {
     return await updatePassword(id_user, hashedPassword)
 }
 
+const getAllUserFunc = async () => {
+    return await getAllUser()
+}
+
+const searchUserWithUserName = async (keySearch) => {
+
+    const resultSearch = await searchUserByUserName(keySearch)
+    return resultSearch ? resultSearch : "No result search!"
+}
+
 module.exports = {
     findUserByEmail,
     findUserByUserName,
     findUserById,
     updateProfileUser,
     getUserProfile,
-    updateChangePassword
+    updateChangePassword,
+    getAllUserFunc,
+    searchUserWithUserName
 }

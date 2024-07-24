@@ -9,6 +9,7 @@ const drugModel = require('../drug.model')(sequelize, DataTypes);
 const DrugApplication = require("../drugApplication.model")(sequelize, DataTypes);
 const DrugApplicationDetail = require("../drugApplicationDetail.model")(sequelize, DataTypes);
 const ScheduleDetail = require('../scheduleDetail.model')(sequelize, DataTypes)
+const hospitalModel = require('../hospital.model')(sequelize, DataTypes)
 const getDrugApplicationByUser = async (id_user) => {
     return await DrugApplication.findAll({ where: { id_user: id_user } })
 }
@@ -28,10 +29,6 @@ const getDrugFromId = async (id_drug) => {
         where: { id_drug: id_drug }
     })
 }
-
-
-
-
 
 const getDrugAppFromId = async (id_drug_app) => {
     return await DrugApplication.findOne({ where: { id: id_drug_app } })
@@ -153,6 +150,8 @@ const scanDrugApplicationUpdate = async (id_user, id_application) => {
     })
 }
 
+
+
 // (thêm thuốc custom)
 const createApplicationDetail = async ({
     id_drug,
@@ -223,6 +222,26 @@ const getDrugFromDrugApplicationDetail = async (id_drug_application_detail) => {
 }
 
 
+const getAllHostpital = async () => {
+    return await hospitalModel.findAll()
+}
+
+const searchHospital = async (keySearch) => {
+    console.log("debug keySearch:", keySearch)
+    try {
+        const hospital = await hospitalModel.findAll({
+            where: {
+                name: {
+                    [Op.iLike]: `%${keySearch}%`
+                }
+            }
+        })
+        return hospital
+    } catch (error) {
+        throw new BadRequestError('Could not search user', error)
+    }
+}
+
 
 
 module.exports = {
@@ -245,5 +264,7 @@ module.exports = {
     scanDrugApplicationUpdate,
     createApplicationDetail,
     incrementQuantityUsed,
-    getDrugFromDrugApplicationDetail
+    getDrugFromDrugApplicationDetail,
+    getAllHostpital,
+    searchHospital
 }

@@ -18,7 +18,9 @@ const { getDrugApplicationByUser,
     getDrugApplicationByIdApplication,
     scanDrugApplicationUpdate,
     createApplicationDetail,
-    getDrugFromDrugApplicationDetail
+    getDrugFromDrugApplicationDetail,
+    getAllHostpital,
+    searchHospital
 } = require("../models/repositories/drug.repo")
 const { NotBeforeError } = require("jsonwebtoken")
 const { findUserById } = require("../models/repositories/user.repo")
@@ -250,6 +252,17 @@ class DrugService {
             throw error;
         }
     }
+
+
+    static getAllHospitalFunc = async () => {
+        return await getAllHostpital()
+    }
+    
+    static searchHospitalWithName = async (keySearch) => {
+        const resultSearch = await searchHospital(keySearch)
+        return resultSearch
+    }
+    
 
 }
 module.exports = DrugService

@@ -64,12 +64,24 @@ const insertListInvoiceDetail = async ({ listDrugCart, id_invoice }) => {
     }
 };
 
+const getAllInvoice = async (id_user) => {
+    return await invoiceModel.findAll({
+        where: { id_user }
+    })
+}
 
+const getInvoiceById = async (id_invoice) => {
+    return await invoiceModel.findOne({
+        where: { id_invoice }
+    })
+}
 
 module.exports = {
     getAllPaymentOfUser,
     insertPaymentInfo,
     createInvoice,
-    insertListInvoiceDetail
+    insertListInvoiceDetail,
+    getAllInvoice,
+    getInvoiceById
 }
 

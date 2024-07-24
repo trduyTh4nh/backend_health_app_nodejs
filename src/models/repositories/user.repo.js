@@ -1,8 +1,8 @@
 
-const { where } = require('sequelize');
+const { where, Op } = require('sequelize');
 const sequelize = require('../../db/init.sequelize');
 const { getInfoData } = require('../../utils');
-const { NotFoundError } = require('../../core/error.response');
+const { NotFoundError, BadRequestError } = require('../../core/error.response');
 const DataTypes = require('sequelize').DataTypes;
 
 const User = require('../user.model')(sequelize, DataTypes)
@@ -17,6 +17,11 @@ const findUserInCart = async (id_user) => {
     return await Cart.findOne({ where: { id_user } })
 }
 
+const createProfile = async (id_user) => {
+    return await Profile.create({
+        id_user
+    })
+}
 
 const updateProfile = async (id_user,
     {
@@ -83,12 +88,33 @@ const updatePassword = async (id_user, repass) => {
 
 }
 
+const getAllUser = async () => {
+    return await User.findAll()
+}
 
+const searchUserByUserName = async (keySearch) => {
+    try {
+
+        const users = await User.findAll({
+            where: {
+                username: {
+                    [Op.iLike]: `%${keySearch}%`
+                }
+            }
+        })
+        return users
+    } catch (error) {
+        throw new BadRequestError('Could not search user', error)
+    }
+}
 
 module.exports = {
     findUserById,
     findUserInCart,
     updateProfile,
     getUserAndProfile,
-    updatePassword
+    updatePassword,
+    createProfile,
+    getAllUser,
+    searchUserByUserName
 }
