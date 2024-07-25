@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         quantity: {
             type: DataTypes.INTEGER,
+        },
+        id_app_detail: {
+            type: DataTypes.INTEGER
         }
     }, {
         tableName: 'cart_detail',

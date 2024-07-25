@@ -22,7 +22,7 @@ class CartService {
 
     }
 
-    static insertDrugIntoCart = async ({ id_drug, id_user }) => {
+    static insertDrugIntoCart = async ({ id_drug, id_user, id_app_detail }) => {
         try {
             const foundUser = await findUserById(id_user);
             if (!foundUser) {
@@ -39,6 +39,7 @@ class CartService {
                 id_drug: id_drug,
                 id_cart: foundCartUser.id_cart,
                 add_date: currentDate,
+                id_app_detail
             });
 
             if (!insertCartDetailToCart) {

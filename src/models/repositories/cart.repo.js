@@ -7,6 +7,7 @@ const Cart = require('../cart.model')(sequelize, DataTypes)
 const drugModel = require('../drug.model')(sequelize, DataTypes);
 const CartDetail = require('../cart.detail.model')(sequelize, DataTypes)
 const Drug = require('../drug.model')(sequelize, DataTypes)
+const drugApplicationDetailModel = require('../drugApplicationDetail.model')(sequelize, DataTypes);
 
 // khi tạo user thì chạy api này để tạo cart cho user đó luôn, 
 // mỗi user có cart riêng
@@ -28,7 +29,8 @@ const addDrugToCart = async ({
     id_drug,
     id_cart,
     add_date,
-    quantity = 1
+    quantity = 1,
+    id_app_detail
 }) => {
 
     const existingCart = await Cart.findOne({ where: { id_cart: id_cart } })
@@ -50,11 +52,20 @@ const addDrugToCart = async ({
         throw new BadRequestError('Drug already exist in cart!')
     }
 
+    const findFoundAppDetail = await drugApplicationDetailModel.findOne({
+        where: { id_app_detail }
+    })
+
+    if(!findFoundAppDetail){
+        throw new NotFoundError('Drug app detail not found!')
+    }
+
     return await CartDetail.upsert({
         id_drug,
         id_cart,
         date_add: add_date,
-        quantity
+        quantity,
+        id_app_detail
     })
 }
 

@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
     const InvoiceDetail = sequelize.define('InvoiceDetail', {
         id_invoice_detail: {
@@ -16,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         id_invoice: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        id_app_detail: {
+            type: DataTypes.INTEGER
         }
     }, {
         tableName: 'invoice_detail',

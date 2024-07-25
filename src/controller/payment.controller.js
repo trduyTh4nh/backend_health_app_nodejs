@@ -30,6 +30,13 @@ class PaymentController {
             metadata: await PaymentService.getInvoiceById(req.params.id_invoice)
         }).send(res)
     }
+
+    updateInvoiceStatus = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Update status successfully!",
+            metadata: await PaymentService.updateInvoice(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new PaymentController()

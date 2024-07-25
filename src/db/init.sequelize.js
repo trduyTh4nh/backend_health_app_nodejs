@@ -44,6 +44,7 @@ const Payment = require('../models/payment.model')(sequelizes, DataTypes)
 const Invoice = require('../models/invoice.model')(sequelizes, DataTypes)
 const InvoiceDetail = require('../models/invoiceDetail.model')(sequelizes, DataTypes)
 const Notification = require('../models/notification.model')(sequelizes, DataTypes)
+const Disease = require('../models/disease.model')(sequelizes, DataTypes)
 defineAssociations(sequelizes);
 
 sequelizes.sync({ force: false }).then(() => {

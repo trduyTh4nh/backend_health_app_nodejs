@@ -9,7 +9,7 @@ const DataTypes = require('sequelize').DataTypes;
 const paymentInfoModel = require("../paymentInfo.model")(sequelize, DataTypes)
 const invoiceModel = require("../invoice.model")(sequelize, DataTypes)
 const invoiceDetail = require("../invoiceDetail.model")(sequelize, DataTypes)
-
+const dugAppDetail = require("../drugApplicationDetail.model")(sequelize, DataTypes)
 const getAllPaymentOfUser = async (id_user) => {
     return paymentInfoModel.findAll({ where: { id_user } })
 }
@@ -50,12 +50,11 @@ const createInvoice = async ({
 
 const insertListInvoiceDetail = async ({ listDrugCart, id_invoice }) => {
     try {
-
         const listInvoiceDetail = listDrugCart.map(item => ({
             id_drug: item.id_drug,
             quantity: item.quantity,
-
-            id_invoice
+            id_invoice,
+            id_app_detail: item.id_app_detail
         }));
 
         const result = await invoiceDetail.bulkCreate(listInvoiceDetail);
@@ -166,6 +165,55 @@ const getInvoiceById = async (id_invoice) => {
 
 };
 
+
+const updateInoiceStatus = async (id_invoice) => {
+
+    const foundInvoice = await invoiceModel.findOne({
+        where: { id_invoice }
+    })
+
+
+
+    if (!foundInvoice) {
+        throw new BadRequestError('Not found invoice to update!')
+    }
+
+    await foundInvoice.update({
+        status: true
+    })
+
+    const listInvoiceDetail = await invoiceDetail.findAll({
+        where: { id_invoice: foundInvoice.id_invoice }
+    })
+
+
+    const listResult = []
+    for (let i = 0; i < listInvoiceDetail.length; i++) {
+        const invoiceDetail = await listInvoiceDetail[i]
+
+
+        const foundAppDetail = await dugAppDetail.findOne({
+            where: { id_app_detail: invoiceDetail.id_app_detail }
+        })
+
+        console.log("DEBUG foundAppDetail.quantity", foundAppDetail.quantity)
+        console.log("DEBUG invoiceDetail.quantity", invoiceDetail.quantity)
+
+        const updateDrugAppDetail = await dugAppDetail.update({
+            quantity: (foundAppDetail.quantity + invoiceDetail.quantity),
+        }, {
+            where: { id_app_detail: invoiceDetail.id_app_detail }
+        })
+        listResult.push(updateDrugAppDetail)
+    }
+
+    return {
+        ...foundInvoice.dataValues,
+        listResult
+    }
+
+}
+
 module.exports = {
     getAllPaymentOfUser,
     insertPaymentInfo,
@@ -173,6 +221,7 @@ module.exports = {
     insertListInvoiceDetail,
     getAllInvoice,
     getInvoiceById,
-    getInvoiceUser
+    getInvoiceUser,
+    updateInoiceStatus
 }
 

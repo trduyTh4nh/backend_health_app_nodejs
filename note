@@ -77,9 +77,9 @@ var enumPriority = [
 22	API search bệnh (Crawl)	++	
 23	API tổng hợp doanh thu	+	
 24	API tổng hợp lợi nhuận	+	
-25	API CRUD tất cả người dùng + 		
+
 26	Check phân quyền người dùng trên API +++		
-27	API CRUD tất cả bệnh viện +		
+  
 28	API search người dùng +		
 29	API search bệnh viện +		
 30	API lấy người dùng by ID+++	
@@ -106,3 +106,17 @@ var enumPriority = [
 -- xóa notificaiton
 
 -- insert payment return id_order
+
+
+
+SELECT id_disease, COUNT(*) as count
+FROM drug_application
+WHERE id_disease IS NOT NULL AND EXTRACT(MONTH FROM created_date) = 9
+GROUP BY id_disease
+ORDER BY count DESC, id_disease ASC
+limit 1
+
+SELECT EXTRACT(MONTH FROM created_date) as month, count(id_disease) as count
+FROM drug_application
+WHERE id_disease = 1 and EXTRACT(YEAR FROM created_date) = 2023
+GROUP BY EXTRACT(MONTH FROM created_date)
