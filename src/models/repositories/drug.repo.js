@@ -10,6 +10,7 @@ const DrugApplication = require("../drugApplication.model")(sequelize, DataTypes
 const DrugApplicationDetail = require("../drugApplicationDetail.model")(sequelize, DataTypes);
 const ScheduleDetail = require('../scheduleDetail.model')(sequelize, DataTypes)
 const hospitalModel = require('../hospital.model')(sequelize, DataTypes)
+const diseaseModel = require('../disease.model')(sequelize, DataTypes)
 const getDrugApplicationByUser = async (id_user) => {
     return await DrugApplication.findAll({ where: { id_user: id_user } })
 }
@@ -247,12 +248,16 @@ const getApplicationAppendHospital = async (id_drug_application) => {
     if (!drugApplication) {
         throw new NotFoundError('Not found drug application!')
     }
+    const foundDisease = await diseaseModel.findOne({
+        where: { id_disease: drugApplication.id_disease }
+    })
     const hospitalOfDrugApp = await hospitalModel.findOne({
         where: { id_hospital: drugApplication.id_hospital }
     })
 
     return {
         ...drugApplication.dataValues,
+        disease: foundDisease,
         hospital: hospitalOfDrugApp
     }
 }

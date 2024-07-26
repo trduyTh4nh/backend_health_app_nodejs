@@ -3,6 +3,7 @@ const { where, Op } = require('sequelize');
 const sequelize = require('../../db/init.sequelize');
 const { getInfoData } = require('../../utils');
 const { NotFoundError, BadRequestError } = require('../../core/error.response');
+const { findUserByEmail } = require('../../service/user.service');
 const DataTypes = require('sequelize').DataTypes;
 
 const User = require('../user.model')(sequelize, DataTypes)
@@ -114,6 +115,21 @@ const findProfileUser = async (id_user) => {
     })
 }
 
+const verifyEmail = async (email) => {
+    const foundUser = await User.findOne({
+        where: { email }
+    })
+
+    if (!foundUser) {
+        throw new NotFoundError('User does not exists!')
+    }
+
+    await foundUser.update({
+        verified: true
+    })
+
+}
+
 module.exports = {
     findUserById,
     findUserInCart,
@@ -123,5 +139,6 @@ module.exports = {
     createProfile,
     getAllUser,
     searchUserByUserName,
-    findProfileUser
+    findProfileUser,
+    verifyEmail
 }

@@ -10,6 +10,7 @@ const paymentInfoModel = require("../paymentInfo.model")(sequelize, DataTypes)
 const invoiceModel = require("../invoice.model")(sequelize, DataTypes)
 const invoiceDetail = require("../invoiceDetail.model")(sequelize, DataTypes)
 const dugAppDetail = require("../drugApplicationDetail.model")(sequelize, DataTypes)
+const addressModel = require("../address.model")(sequelize, DataTypes)
 const getAllPaymentOfUser = async (id_user) => {
     return paymentInfoModel.findAll({ where: { id_user } })
 }
@@ -132,37 +133,46 @@ const getInvoiceUser = async (id_user) => {
 
 
 const getInvoiceById = async (id_invoice) => {
-
-    console.log('Fetching invoice with id:', id_invoice);
-    const invoice = await invoiceModel.findOne({
-        where: { id_invoice }
-    });
-
-    if (!invoice) {
-        throw new NotFoundError('Invoice not found');
-    }
-
-    // Ensure invoiceDetail is correctly imported and defined
-    console.log('Fetching invoice details for invoice id:', invoice.id_invoice);
-
-    const listInvoiceDetail = await getInvoiceDetail(invoice.id_invoice)
-
-    var listResult = [];
-    for (let i = 0; i < listInvoiceDetail.length; i++) {
-        var invoiceDetail = listInvoiceDetail[i];
-        var drug = await getDrugFromId(invoiceDetail.id_drug);
-
-        listResult.push({
-            invoiceDetail,
-            drug
+    try {
+        console.log('Fetching invoice with id:', id_invoice);
+        const invoice = await invoiceModel.findOne({
+            where: { id_invoice }
         });
+
+        if (!invoice) {
+            throw new NotFoundError('Invoice not found');
+        }
+
+        const foundAddress = await addressModel.findOne({
+            where: { id_address: invoice.id_address }
+        })
+
+        console.log('Fetching invoice details for invoice id:', invoice.id_invoice);
+
+        const listInvoiceDetail = await invoiceDetail.findAll({
+            where: { id_invoice: invoice.id_invoice }
+        });
+
+        const listResult = [];
+        for (let i = 0; i < listInvoiceDetail.length; i++) {
+            const detail = listInvoiceDetail[i];
+            const drug = await getDrugFromId(detail.id_drug);
+
+            listResult.push({
+                invoiceDetail: detail,
+                drug
+            });
+        }
+
+        return {
+            ...invoice.dataValues,
+            addressFounded: foundAddress,
+            listResult
+        };
+    } catch (error) {
+        console.error('Error fetching invoice:', error.message);
+        throw error;
     }
-
-    return {
-        ...invoice.dataValues,
-        listResult
-    };
-
 };
 
 
@@ -214,6 +224,21 @@ const updateInoiceStatus = async (id_invoice) => {
 
 }
 
+
+const updateDestroyInvoice = async (id_invoice) => {
+    const foundInvoice = await invoiceModel.findOne({
+        where: { id_invoice }
+    })
+
+    if (!foundInvoice) {
+        throw new NotFoundError('Not found invoice!')
+    }
+
+    await foundInvoice.update({
+        isdestroy: true
+    })
+}
+
 module.exports = {
     getAllPaymentOfUser,
     insertPaymentInfo,
@@ -222,6 +247,7 @@ module.exports = {
     getAllInvoice,
     getInvoiceById,
     getInvoiceUser,
-    updateInoiceStatus
+    updateInoiceStatus,
+    updateDestroyInvoice
 }
 

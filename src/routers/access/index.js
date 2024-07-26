@@ -5,6 +5,7 @@ const accessController = require('../../controller/access.controller')
 const { authentication } = require('../../auth/auth')
 const router = express.Router()
 
+router.get('/verify', asyncHandler(accessController.verificationEmail))
 router.post('/register', asyncHandler(accessController.register))
 router.post('/login', asyncHandler(accessController.login))
 router.use(authentication)

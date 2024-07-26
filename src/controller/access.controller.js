@@ -8,7 +8,7 @@ class AccessController {
     register = async (req, res, next) => {
         new CREATED({
             message: "Register successfully!",
-            metadata: await AccessService.register(req.body),
+            metadata: await AccessService.registerV2(req.body),
         }).send(res)
     }
 
@@ -24,6 +24,27 @@ class AccessController {
             message: "Logout successfully!",
             metadata: await AccessService.logout(req.body)
         }).send(res)
+    }
+
+    // verificationEmail = async (req, res, next) => {
+    //     new SuccessResponse({
+    //         message: "Verify successfully!",
+    //         metadata: await AccessService.verificationEmail(req.query.email)
+    //     }).send(res)
+    // }
+
+    verificationEmail = async (req, res, next) => {
+        try {
+            const email = req.query.email;
+            await AccessService.verificationEmail(email);
+
+            res.render('verification', {
+                message: "Verify successfully!",
+                email: email
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
 }

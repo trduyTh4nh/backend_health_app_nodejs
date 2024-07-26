@@ -2,7 +2,7 @@
 
 
 const { BadRequestError, NotFoundError } = require('../core/error.response');
-const { createInvoice, insertListInvoiceDetail, getAllInvoice, getInvoiceUser, getInvoiceById, updateInoiceStatus } = require('../models/repositories/invoice.repo');
+const { createInvoice, insertListInvoiceDetail, getAllInvoice, getInvoiceUser, getInvoiceById, updateInoiceStatus, updateDestroyInvoice } = require('../models/repositories/invoice.repo');
 const { findUserById } = require('./user.service');
 
 
@@ -38,7 +38,7 @@ class PaymentService {
             await insertListInvoiceDetail({
                 listDrugCart,
                 id_invoice: invoice.id_invoice,
-                
+
             });
 
             return {
@@ -81,6 +81,10 @@ class PaymentService {
 
     static updateInvoice = async ({ id_invoice }) => {
         return await updateInoiceStatus(id_invoice)
+    }
+
+    static updateDestroyInvoiceFunc = async ({ id_invoice }) => {
+        return await updateDestroyInvoice(id_invoice)
     }
 }
 

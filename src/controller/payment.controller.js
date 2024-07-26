@@ -37,6 +37,13 @@ class PaymentController {
             metadata: await PaymentService.updateInvoice(req.body)
         }).send(res)
     }
+
+    updateDestroyInvoice = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Destroy invoice successfully!",
+            metadata: await PaymentService.updateDestroyInvoiceFunc(req.body)
+        }).send(res)
+    }
 }
 
 module.exports = new PaymentController()

@@ -10,4 +10,5 @@ router.get('/getAllInvoice/:id_user', asyncHandler(paymentController.getAllInvoi
 router.get('/getAllOrder/:id_user', asyncHandler(paymentController.getAllOrder))
 router.get('/getInvoice/:id_invoice', asyncHandler(paymentController.getInvoiceById))
 router.put('/updateInvoiceStatus', asyncHandler(paymentController.updateInvoiceStatus))
+router.put('/updateDestroyInvoice', asyncHandler(paymentController.updateDestroyInvoice))
 module.exports = router

@@ -175,3 +175,17 @@ CREATE TABLE payment (
     total_money NUMERIC(10, 2) NOT NULL,
     FOREIGN KEY (id_invoice) REFERENCES invoice (id_invoice)
 )
+
+DELETE FROM users WHERE email = 'tttranduy999@gmail.com'
+
+DELETE FROM users WHERE email = 'quangrain2014@gmail.com'
+
+
+
+SELECT * FROM users WHERE email = 'quangrain2014@gmail.com'
+
+
+SELECT * FROM profile
+
+
+SELECT * FROM invoice

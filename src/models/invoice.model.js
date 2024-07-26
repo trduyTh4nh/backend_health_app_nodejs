@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         id_paypal: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        isdestroy: {
+            type: DataTypes.BOOLEAN,
+            default: false
         }
 
     }, {

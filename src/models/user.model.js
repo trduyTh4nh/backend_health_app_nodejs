@@ -69,6 +69,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         phone: {
             type: DataTypes.STRING(20)
+        },
+        verified: {
+            type: DataTypes.BOOLEAN
         }
     }, {
         tableName: 'users',
