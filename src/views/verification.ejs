@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1 style="font-size: 28px;">Chào mừng <%= email %> đến với WELLMATE</h1>
+        </header>
+        <div>
+            <h1 id="message"></h1>
+            <p id="email"></p>
+            <div class="box" style="width: 100%; text-align: center; justify-content: center;">
+                <div class="wrap"
+                    style="display: flex; justify-content: center; text-align: center; width: 100%; align-items: center;">
+                    <div>
+                        <h1
+                            style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                            ❤️WELL</h1>
+                    </div>
+                    <div>
+                        <h1
+                            style="color: #FF6969; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                            MATE</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text" style="width: 100%; text-align: center;">
+                <h1
+                    style="color: #FF6969; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    Chúc bạn có thật nhiều sức khỏe!!</h1>
+            </div>
+
+        </div>
+        <footer>
+            &copy; 2024 Wellmate. All rights reserved.
+        </footer>
+    </main>
+    <script>
+        // Sample data
+        const message = "Xác nhận email thành công!";
+        const email = "user@example.com";
+        // Setting the content
+        document.getElementById('message').textContent = message;
+        document.getElementById('email').textContent = email;
+    </script>
+</body>
+
+</html>

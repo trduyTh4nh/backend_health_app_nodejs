@@ -73,7 +73,7 @@ class AccessService {
                 await saveToken(foundUser.id_user, token)
             }
             return {
-                user: getInfoData({ fields: ['id_user', 'name', 'username', 'email', 'role'], object: foundUser }),
+                user: getInfoData({ fields: ['id_user', 'name', 'username', 'email', 'role', 'verified'], object: foundUser }),
                 token: token
             }
         } catch (error) {
@@ -95,6 +95,11 @@ class AccessService {
 
 
 
+
+
+    static resentOpt = async ({ email }) => {
+        return await sendOPTVerificationEmail({ email })
+    }
 
     static registerV2 = async ({ username, name, email, password, phone, role = 1 }) => {
         const foundUser = await findUserByEmail(email);
@@ -155,7 +160,7 @@ let transporter = nodemailer.createTransport({
 
 });
 
-const sendOPTVerificationEmail = async ({ _id, email }) => {
+const sendOPTVerificationEmail = async ({ email }) => {
     try {
         const opt = `${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -165,10 +170,10 @@ const sendOPTVerificationEmail = async ({ _id, email }) => {
             to: email,
             subject: "Verify your email!",
             html: `
-                <p> Nhấn vào cái này là lụm <a href='http://192.168.100.136:3107/v1/api/access/verify?email=${email}'> Lụm cmnr </a> </p> <br>
+                <p> Nhấn vào đây để xác nhận <b> <a href='http://192.168.100.136:3107/v1/api/access/verify?email=${email}'> XÁC NHẬN EMAIL </a> </b> </p> <br>
                 <p> This code <b> expires in 1 hour. </b> </p>
             `
-        }; 
+        };
 
         // Send email
         await transporter.sendMail(mailOptions);

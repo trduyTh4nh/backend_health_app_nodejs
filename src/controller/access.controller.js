@@ -47,6 +47,14 @@ class AccessController {
         }
     }
 
+    resendEmail = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Resend email!",
+            metadata: await AccessService.resentOpt(req.body)
+        }).send(res)
+    }
+
+
 }
 
 module.exports = new AccessController()

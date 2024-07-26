@@ -18,14 +18,25 @@ const mostPopularDisease = async (month) => {
             type: QueryTypes.SELECT,
         });
 
+
+    console.log("BEST DISEASE: ", bestDisease)
+    var result = []
+
+    if (bestDisease.length == 0) {
+        return result
+    }
+
     const disease = await diseaseModel.findOne({
         where: { id_disease: bestDisease[0].id_disease }
     })
 
-    return {
+    result = {
         bestDisease,
-        disease
+        disease: disease ? disease : []
+
     }
+
+    return result
 }
 
 const numberDiseaseMonthOfYear = async (id_disease, year) => {

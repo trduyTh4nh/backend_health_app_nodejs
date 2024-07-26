@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const compression = require('compression')
-
+const path = require('path')
 const app = express();
 
 app.use(morgan("dev"))
@@ -21,6 +21,11 @@ require('./db/init.postgres')
 // init routes 
 app.use('/', require('./routers/main'))
 
+
+app.set('view engine', 'ejs')
+
+app.set('views', path.join(__dirname, 'views'))
+
 // handling error
 app.use((req, res, next) => {
     const error = new Error("Not found")
@@ -35,7 +40,7 @@ app.use((error, req, res, next) => {
         status: 'error',
         code: statusCode,
         stack: error.stack,
-        message: error.message
+        message: error.message 
     })
 })
 
