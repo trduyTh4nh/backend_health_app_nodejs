@@ -93,7 +93,7 @@ const getInvoiceUser = async (id_user) => {
 
 
         var dataInvoiceDetail = await invoiceDetail.findAll({
-            where: { id_invoice: invoice.id_invoice }
+            where: { id_invoice: invoice.id_invoice },
         })
 
         for (let k = 0; k < dataInvoiceDetail.length; k++) {
