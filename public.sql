@@ -178,14 +178,53 @@ CREATE TABLE payment (
 
 DELETE FROM users WHERE email = 'tttranduy999@gmail.com'
 
-DELETE FROM users WHERE email = 'quangrain2014@gmail.com'
 
 
 
-SELECT * FROM users WHERE email = 'quangrain2014@gmail.com'
+SELECT * FROM users WHERE email = 'testquang35@gmail.com'
 
 
 SELECT * FROM profile
 
 
 SELECT * FROM invoice
+
+SELECT * FROM drug_application
+
+UPDATE drug_application SET id_user = null WHERE id = 11
+
+UPDATE drug_application SET id_user = null WHERE id = 2
+
+UPDATE drug_application SET id_user = null WHERE id = 3
+
+DELETE FROM users WHERE email = 'testquang35@gmail.com'
+
+DELETE FROM address_user WHERE id_user = 104
+
+SELECT * FROM invoice
+
+
+
+SELECT * FROM address_user
+
+
+SELECT * FROM users WHERE email = 'quangrain2014@gmail.com'
+
+
+
+
+
+SELECT * FROM drug_application_detail
+
+
+SELECT * FROM users
+
+
+SELECT * FROM invoice
+
+UPDATE invoice
+SET create_date = create_date + (INTERVAL '1 month' * (5 - EXTRACT(MONTH FROM create_date)))
+WHERE id_invoice BETWEEN 62 AND 72
+
+
+

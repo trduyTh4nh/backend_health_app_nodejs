@@ -66,10 +66,27 @@ const insertListInvoiceDetail = async ({ listDrugCart, id_invoice }) => {
     }
 };
 
+// const getAllInvoice = async (id_user) => {
+
+//     const listInvoice = await invoiceModel.findAll({
+//         where: { id_user }
+//     })
+//     for (let index = 0; index < listInvoice.length; index++) {
+//         const invoice = listInvoice[index];
+
+//         const dateCreate = invoice.create_date
+//     }
+
+//     return listInvoice
+// }
+
 const getAllInvoice = async (id_user) => {
-    return await invoiceModel.findAll({
-        where: { id_user }
-    })
+    const listInvoice = await invoiceModel.findAll({
+        where: { id_user },
+        order: [['create_date', 'ASC']] 
+    });
+
+    return listInvoice;
 }
 
 

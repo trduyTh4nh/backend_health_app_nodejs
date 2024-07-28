@@ -154,8 +154,8 @@ let transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: 'quangrain2015@gmail.com',
-        pass: 'zxaa thoy yisu lijl'
+        user: 'Type your email here!',
+        pass: 'Type your app password here!'
     },
 
 });
@@ -170,7 +170,7 @@ const sendOPTVerificationEmail = async ({ email }) => {
             to: email,
             subject: "Verify your email!",
             html: `
-                <p> Nhấn vào đây để xác nhận <b> <a href='http://192.168.100.136:3107/v1/api/access/verify?email=${email}'> XÁC NHẬN EMAIL </a> </b> </p> <br>
+                <p> Nhấn vào đây để xác nhận <b> <a href='http://192.168.159.244:3107/v1/api/access/verify?email=${email}'> XÁC NHẬN EMAIL </a> </b> </p> <br>
                 <p> This code <b> expires in 1 hour. </b> </p>
             `
         };

@@ -81,7 +81,7 @@ var enumPriority = [
 26	Check phân quyền người dùng trên API +++		
   
 28	API search người dùng +		
-29	API search bệnh viện +		
+29	API search bệnh viện +		 
 30	API lấy người dùng by ID+++	
 31	API lấy bệnh viện by ID	+	
 32	API tổng hợp dịch bệnh	+	
